@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>FinGrow Profile | Your account & settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1a1a2e;
+            line-height: 1.5;
+        }
+        :root {
+            --purple-primary: #6C47FF;
+            --purple-dark: #5a3ad1;
+            --purple-soft: #f0ebff;
+            --gold-primary: #E6B422;
+            --gold-dark: #c99f1a;
+            --gray-light: #f8f9fc;
+            --gray-border: #eef2f6;
+            --text-muted: #5a6874;
+            --shadow-sm: 0 10px 25px -5px rgba(0,0,0,0.05);
+            --radius-card: 1.5rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--gray-border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .logo img {
+            height: 44px;
+            width: auto;
+        }
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), var(--gold-primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--purple-primary);
+            font-weight: 600;
+        }
+        /* Profile sections */
+        .profile-header {
+            background: linear-gradient(135deg, var(--purple-soft), white);
+            border-radius: var(--radius-card);
+            padding: 2rem;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .avatar {
+            background: var(--purple-primary);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+        .user-details h2 {
+            font-size: 1.8rem;
+        }
+        .user-details p {
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        .guest-badge {
+            background: var(--gold-primary);
+            color: #1e1a2f;
+            padding: 0.25rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .stat-box {
+            background: var(--gray-light);
+            border-radius: var(--radius-card);
+            padding: 1rem;
+            text-align: center;
+        }
+        .stat-box .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--purple-primary);
+        }
+        .settings-section {
+            background: white;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-card);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--gray-border);
+        }
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        .danger-zone {
+            border: 2px solid #fee2e2;
+            background: #fff5f5;
+        }
+        .btn-reset {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-reset:hover {
+            background: #b91c1c;
+        }
+        .btn-upgrade {
+            background: var(--gold-primary);
+            color: #1e1a2f;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--gray-border);
+            margin-top: 2rem;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--purple-primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-container">
+        <div class="logo">
+            <a href="index.html"><img src="Logo.png" alt="FinGrow" onerror="this.src='https://placehold.co/50x50?text=FG'"></a>
+            <span class="logo-text">FinGrow</span>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="lessons.html">Lessons</a>
+            <a href="simulator.html">Simulator</a>
+            <a href="habits.html">Habits</a>
+            <a href="profile.html" class="active">Profile</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div id="profileContainer">
+        <!-- dynamic content -->
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 FinGrow — part of Apex Tech Solutions. Build your financial future.</p>
+</footer>
+
+<script>
+    // Load user data from localStorage
+    function loadUserData() {
+        let data = localStorage.getItem("fingrow_user");
+        if (!data) {
+            const defaultData = {
+                name: "Guest",
+                email: null,
+                isGuest: true,
+                guestExpiry: new Date(Date.now() + 60 * 60 * 1000).toISOString(), // 1 hour
+                lessonsCompleted: [],
+                portfolio: { cash: 10000, holdings: [] },
+                habits: {
+                    currentStreak: 0,
+                    longestStreak: 0,
+                    lastCheckin: null,
+                    habitsList: [
+                        { id: 1, name: "Save $50 this week", frequency: "weekly", streak: 0, lastCompletedDate: null, completedThisWeek: false },
+                        { id: 2, name: "Read 1 lesson", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false },
+                        { id: 3, name: "Log into FinGrow", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false },
+                        { id: 4, name: "Practice 1 trade in simulator", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false }
+                    ]
+                },
+                activity: [],
+                totalPortfolioValue: 10000,
+                settings: { darkMode: false, emailNotifications: true }
+            };
+            localStorage.setItem("fingrow_user", JSON.stringify(defaultData));
+            return defaultData;
+        }
+        return JSON.parse(data);
+    }
+
+    function saveUserData(data) {
+        localStorage.setItem("fingrow_user", JSON.stringify(data));
+    }
+
+    // Compute stats
+    function getUserStats(userData) {
+        const lessonsDone = userData.lessonsCompleted.length;
+        const totalLessons = 5;
+        const portfolioValue = userData.totalPortfolioValue || 10000;
+        const totalTrades = userData.activity ? userData.activity.filter(a => a.type === "trade").length : 0;
+        const streak = userData.habits.currentStreak || 0;
+        return { lessonsDone, totalLessons, portfolioValue, totalTrades, streak };
+    }
+
+    // Render profile page
+    function renderProfile() {
+        let userData = loadUserData();
+        const stats = getUserStats(userData);
+        const isGuest = userData.isGuest === true;
+        let guestWarning = "";
+        if (isGuest && userData.guestExpiry) {
+            const expiry = new Date(userData.guestExpiry);
+            const now = new Date();
+            const minutesLeft = Math.max(0, Math.floor((expiry - now) / 60000));
+            if (minutesLeft <= 60) {
+                guestWarning = `<div class="settings-section" style="background:#fff8e7; border-color:var(--gold-primary);">
+                    <strong>⚠️ Guest session expires in ${minutesLeft} minutes.</strong> 
+                    <button id="upgradeFromWarningBtn" class="btn-upgrade" style="margin-left:1rem;">Sign up to save progress →</button>
+                </div>`;
+            } else {
+                guestWarning = `<div class="settings-section" style="background:#fff8e7; border-color:var(--gold-primary);">
+                    <strong>✨ You're using FinGrow as a guest.</strong> Your progress will be saved for 1 hour. 
+                    <button id="upgradeFromWarningBtn" class="btn-upgrade" style="margin-left:1rem;">Create free account →</button>
+                </div>`;
+            }
+        }
+
+        const avatarLetter = userData.name ? userData.name.charAt(0).toUpperCase() : "U";
+        const profileHtml = `
+            <div class="profile-header">
+                <div class="avatar">${avatarLetter}</div>
+                <div class="user-details">
+                    <h2>${userData.name || "Investor"}</h2>
+                    <p>${isGuest ? '<span class="guest-badge"><i class="fas fa-user-clock"></i> Guest Account</span> — progress saved for 1 hour' : '<span class="guest-badge" style="background:var(--purple-primary); color:white;"><i class="fas fa-check-circle"></i> Registered User</span>'}</p>
+                    ${userData.email ? `<p>📧 ${userData.email}</p>` : '<p>No email linked</p>'}
+                </div>
+            </div>
+            ${guestWarning}
+            <div class="stats-summary">
+                <div class="stat-box"><div class="number">${stats.lessonsDone}/${stats.totalLessons}</div><div>Lessons</div></div>
+                <div class="stat-box"><div class="number">$${stats.portfolioValue.toLocaleString()}</div><div>Portfolio Value</div></div>
+                <div class="stat-box"><div class="number">${stats.totalTrades}</div><div>Simulator Trades</div></div>
+                <div class="stat-box"><div class="number">${stats.streak}</div><div>Habit Streak (days)</div></div>
+            </div>
+            <div class="settings-section">
+                <h3><i class="fas fa-sliders-h"></i> Preferences</h3>
+                <div class="setting-item">
+                    <span><i class="fas fa-moon"></i> Dark Mode (coming soon)</span>
+                    <label class="toggle-switch"><input type="checkbox" id="darkModeToggle" ${userData.settings?.darkMode ? 'checked' : ''} disabled><span class="slider"></span></label>
+                </div>
+                <div class="setting-item">
+                    <span><i class="fas fa-envelope"></i> Email Notifications</span>
+                    <label class="toggle-switch"><input type="checkbox" id="emailNotifToggle" ${userData.settings?.emailNotifications ? 'checked' : ''}><span class="slider"></span></label>
+                </div>
+            </div>
+            <div class="settings-section danger-zone">
+                <h3 style="color:#dc2626;"><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                <div class="setting-item">
+                    <span><strong>Reset Simulator</strong><br><span style="font-size:0.8rem;">Clear all trades, reset cash to $10,000</span></span>
+                    <button id="resetSimulatorBtn" class="btn-reset">Reset</button>
+                </div>
+                <div class="setting-item">
+                    <span><strong>Reset All Progress</strong><br><span style="font-size:0.8rem;">Delete lessons, habits, trades, activity — start over</span></span>
+                    <button id="resetAllBtn" class="btn-reset" onclick="window.location.href='index.html'">Reset Everything</button>
+                </div>
+                ${isGuest ? `
+                <div class="setting-item">
+                    <span><strong>Convert to Registered User</strong><br><span style="font-size:0.8rem;">Save your progress permanently (backend coming soon)</span></span>
+                    <button id="upgradeBtn" class="btn-upgrade" onclick="window.location.href='signup.html'">Sign Up / Log In</button>
+                </div>
+                ` : `
+                <div class="setting-item">
+                    <span><strong>Delete Account</strong><br><span style="font-size:0.8rem;">Permanently delete all data</span></span>
+                    <button id="deleteAccountBtn" class="btn-reset">Delete</button>
+                </div>
+                `}
+            </div>
+        `;
+        document.getElementById("profileContainer").innerHTML = profileHtml;
+
+        // Event listeners
+        document.getElementById("emailNotifToggle")?.addEventListener("change", (e) => {
+            userData.settings = userData.settings || {};
+            userData.settings.emailNotifications = e.target.checked;
+            saveUserData(userData);
+            alert("Preference saved (backend will handle actual emails later).");
+        });
+
+        document.getElementById("resetSimulatorBtn")?.addEventListener("click", () => {
+            if (confirm("⚠️ Reset simulator? This will delete all your holdings and reset cash to $10,000. Progress on lessons/habits stays. Continue?")) {
+                userData.portfolio = { cash: 10000, holdings: [] };
+                userData.totalPortfolioValue = 10000;
+                saveUserData(userData);
+                alert("Simulator reset. Your fake cash is now $10,000.");
+                renderProfile();
+            }
+        });
+
+        document.getElementById("resetAllBtn")?.addEventListener("click", () => {
+            if (confirm("🚨 RESET EVERYTHING? This will delete all lessons, simulator data, habits, activity, and streaks. This cannot be undone. Continue?")) {
+                localStorage.removeItem("fingrow_user");
+                // Re-initialize with fresh data
+                const freshData = {
+                    name: userData.isGuest ? "Guest" : "Investor",
+                    email: userData.email || null,
+                    isGuest: userData.isGuest || true,
+                    guestExpiry: userData.guestExpiry || new Date(Date.now() + 3600000).toISOString(),
+                    lessonsCompleted: [],
+                    portfolio: { cash: 10000, holdings: [] },
+                    habits: {
+                        currentStreak: 0,
+                        longestStreak: 0,
+                        lastCheckin: null,
+                        habitsList: [
+                            { id: 1, name: "Save $50 this week", frequency: "weekly", streak: 0, lastCompletedDate: null, completedThisWeek: false },
+                            { id: 2, name: "Read 1 lesson", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false },
+                            { id: 3, name: "Log into FinGrow", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false },
+                            { id: 4, name: "Practice 1 trade in simulator", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false }
+                        ]
+                    },
+                    activity: [],
+                    totalPortfolioValue: 10000,
+                    settings: { darkMode: false, emailNotifications: true }
+                };
+                localStorage.setItem("fingrow_user", JSON.stringify(freshData));
+                alert("All progress has been reset. Redirecting to dashboard...");
+                window.location.href = "index.html";
+            }
+        });
+
+        if (document.getElementById("upgradeBtn")) {
+            document.getElementById("upgradeBtn").addEventListener("click", () => {
+                alert("🔐 Account creation on progress...");
+            });
+        }
+        if (document.getElementById("upgradeFromWarningBtn")) {
+            document.getElementById("upgradeFromWarningBtn").addEventListener("click", () => {
+                alert("🔐 Full account system coming soon with Express + MongoDB. You can continue using guest mode until then.");
+            });
+        }
+        if (document.getElementById("deleteAccountBtn")) {
+            document.getElementById("deleteAccountBtn").addEventListener("click", () => {
+                if (confirm("⚠️ Permanently delete your account and all data? This action is irreversible.")) {
+                    localStorage.removeItem("fingrow_user");
+                    alert("Account deleted. Redirecting to home page.");
+                    window.location.href = "index.html";
+                }
+            });
+        }
+    }
+
+    renderProfile();
+</script>
+</body>
+</html>

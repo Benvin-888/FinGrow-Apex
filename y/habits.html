@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>FinGrow Habits | Build financial discipline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(108, 71, 255, 0.03), rgba(230, 180, 34, 0.02) 90%);
+            background-color: #fbfcfe;
+            color: #1a1f2e;
+            line-height: 1.5;
+        }
+
+        :root {
+            --purple-primary: #6C47FF;
+            --purple-dark: #5336d6;
+            --purple-glow: rgba(108, 71, 255, 0.2);
+            --gold-primary: #E6B422;
+            --gold-dark: #c99f1a;
+            --gold-soft: #fff2df;
+            --gray-light: #f8fafd;
+            --gray-border: #eef2f8;
+            --text-muted: #5b6b7c;
+            --shadow-sm: 0 12px 30px -8px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 35px -12px rgba(108, 71, 255, 0.15);
+            --radius-card: 1.75rem;
+            --radius-element: 1.25rem;
+            --transition-smooth: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navbar premium */
+        .navbar {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(108, 71, 255, 0.08);
+            padding: 0.9rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo img {
+            height: 44px;
+            width: auto;
+            transition: transform 0.2s ease;
+        }
+
+        .logo-text {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary) 20%, var(--gold-primary) 80%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 550;
+            color: var(--text-muted);
+            transition: var(--transition-smooth);
+            font-size: 0.95rem;
+            padding: 0.4rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--purple-primary);
+            border-bottom-color: var(--purple-primary);
+            font-weight: 600;
+        }
+
+        /* Hero / header section */
+        .page-header {
+            margin: 2rem 0 1.5rem 0;
+        }
+
+        .page-header h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #1e293b, #2d3a4e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Streak premium card */
+        .streak-card {
+            background: linear-gradient(145deg, #ffffff 0%, #fefbf5 100%);
+            border-radius: var(--radius-card);
+            padding: 1.8rem 2rem;
+            margin: 1.8rem 0 2rem 0;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(230, 180, 34, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .streak-card::before {
+            content: "🔥";
+            font-size: 120px;
+            position: absolute;
+            bottom: -20px;
+            right: -10px;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .streak-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .streak-number {
+            font-size: 3.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gold-primary), #b87f0c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+
+        .streak-label {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #5a4a1a;
+        }
+
+        .best-streak {
+            font-size: 0.85rem;
+            background: rgba(230, 180, 34, 0.15);
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 320px;
+            margin: 1.2rem auto 0.8rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .progress-bar-bg {
+            background: #e9eef3;
+            border-radius: 60px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--purple-primary), var(--gold-primary));
+            width: 0%;
+            height: 100%;
+            border-radius: 60px;
+            transition: width 0.4s ease;
+        }
+
+        .checkin-btn {
+            background: linear-gradient(95deg, var(--gold-primary), #e2ab1a);
+            color: #1e1a2f;
+            border: none;
+            padding: 0.9rem 2.4rem;
+            border-radius: 80px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            margin-top: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 6px 14px rgba(230, 180, 34, 0.25);
+        }
+
+        .checkin-btn:hover {
+            background: linear-gradient(95deg, var(--gold-dark), #d6a518);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 22px rgba(230, 180, 34, 0.35);
+        }
+
+        /* Habits section heading */
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2rem 0 1.2rem 0;
+        }
+
+        .section-heading h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        /* Habits List modern cards */
+        .habits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin: 1rem 0 2rem;
+        }
+
+        .habit-item {
+            background: white;
+            border-radius: var(--radius-element);
+            padding: 1.2rem 1.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            transition: var(--transition-smooth);
+            border: 1px solid var(--gray-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .habit-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(108, 71, 255, 0.2);
+        }
+
+        .habit-info {
+            flex: 2;
+        }
+
+        .habit-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .habit-name i {
+            color: var(--purple-primary);
+            font-size: 1.2rem;
+        }
+
+        .habit-streak {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            background: #f0f2f5;
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            border-radius: 40px;
+        }
+
+        .check-btn {
+            background: white;
+            border: 1.5px solid var(--purple-primary);
+            border-radius: 60px;
+            padding: 0.55rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            color: var(--purple-primary);
+        }
+
+        .check-btn.completed {
+            background: var(--purple-primary);
+            color: white;
+            border-color: var(--purple-primary);
+            opacity: 0.9;
+        }
+
+        .check-btn:not(.completed):hover {
+            background: var(--purple-primary);
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .check-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* Rewards glass card */
+        .rewards-section {
+            background: linear-gradient(115deg, rgba(108, 71, 255, 0.04), rgba(230, 180, 34, 0.02));
+            backdrop-filter: blur(2px);
+            border-radius: var(--radius-card);
+            padding: 1.8rem;
+            margin-top: 2rem;
+            border: 1px solid rgba(108, 71, 255, 0.15);
+        }
+
+        .rewards-section h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+        }
+
+        .reward-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.7rem 0;
+            border-bottom: 1px dashed rgba(108, 71, 255, 0.2);
+            font-weight: 500;
+        }
+
+        .reward-item span:first-child i {
+            margin-right: 8px;
+            color: var(--gold-primary);
+        }
+
+        /* Activity feed */
+        .activity-feed {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--gray-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .activity-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .activity-list li {
+            font-size: 0.9rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #f0f2f6;
+        }
+
+        .activity-icon {
+            color: var(--purple-primary);
+            width: 24px;
+        }
+
+        .activity-text {
+            color: #2d3a4e;
+        }
+
+        .activity-date {
+            margin-left: auto;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: #f2f4f8;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--gray-border);
+            margin-top: 3rem;
+            font-size: 0.85rem;
+        }
+
+        /* responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.2rem;
+            }
+            .habit-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .check-btn {
+                align-self: flex-end;
+            }
+            .nav-links {
+                gap: 1rem;
+            }
+            .streak-number {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-container">
+        <div class="logo">
+            <img src="Logo.png" alt="FinGrow" onerror="this.src='https://placehold.co/50x50?text=FG'">
+            <span class="logo-text">FinGrow</span>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="lessons.html">Lessons</a>
+            <a href="simulator.html">Simulator</a>
+            <a href="habits.html" class="active">Habits</a>
+            <a href="profile.html">Profile</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-seedling" style="color: #6C47FF;"></i> Financial Habits</h1>
+        <p>Consistency beats intensity. Track your habits, build streaks, and earn rewards.</p>
+    </div>
+
+    <!-- Streak Card (dynamic) -->
+    <div class="streak-card" id="streakCard"></div>
+
+    <!-- Habits List -->
+    <div class="section-heading">
+        <h3><i class="fas fa-list-check" style="color: var(--purple-primary);"></i> Your Habits</h3>
+        <span style="font-size: 0.8rem; background:#f0f2f5; padding:0.2rem 1rem; border-radius:20px;">daily + weekly</span>
+    </div>
+    <div class="habits-list" id="habitsList"></div>
+
+    <!-- Rewards Section -->
+    <div class="rewards-section" id="rewardsSection"></div>
+
+    <!-- Activity Log (upgrade extra) -->
+    <div class="activity-feed" id="activityLogContainer">
+        <div class="activity-title"><i class="fas fa-clock"></i> Recent Activity</div>
+        <ul class="activity-list" id="activityList"></ul>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 FinGrow — Small habits, big results. Keep going!</p>
+</footer>
+
+<script>
+    // Default habits (pre-set)
+    const defaultHabits = [
+        { id: 1, name: "Save $50 this week", frequency: "weekly", streak: 0, lastCompletedDate: null, completedThisWeek: false },
+        { id: 2, name: "Read 1 lesson", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false },
+        { id: 3, name: "Log into FinGrow", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false },
+        { id: 4, name: "Practice 1 trade in simulator", frequency: "daily", streak: 0, lastCompletedDate: null, completedToday: false }
+    ];
+
+    // Load / initialize user data with missing fields
+    function loadUserData() {
+        let data = localStorage.getItem("fingrow_user");
+        if (!data) {
+            const defaultData = {
+                name: "Alex",
+                lessonsCompleted: [],
+                portfolio: { cash: 10000, holdings: [] },
+                habits: {
+                    currentStreak: 0,
+                    longestStreak: 0,
+                    lastCheckin: null,
+                    habitsList: defaultHabits,
+                    reward7Given: false,
+                    reward14Given: false,
+                    reward30Given: false,
+                    lastWeeklyReset: null
+                },
+                activity: [],
+                totalPortfolioValue: 10000
+            };
+            localStorage.setItem("fingrow_user", JSON.stringify(defaultData));
+            return defaultData;
+        }
+        let parsed = JSON.parse(data);
+        // Ensure all reward flags + lastWeeklyReset + habitsList exists
+        if (!parsed.habits) parsed.habits = { habitsList: defaultHabits, currentStreak: 0, longestStreak: 0, lastCheckin: null };
+        if (!parsed.habits.habitsList) parsed.habits.habitsList = defaultHabits;
+        if (parsed.habits.reward7Given === undefined) parsed.habits.reward7Given = false;
+        if (parsed.habits.reward14Given === undefined) parsed.habits.reward14Given = false;
+        if (parsed.habits.reward30Given === undefined) parsed.habits.reward30Given = false;
+        if (parsed.habits.lastWeeklyReset === undefined) parsed.habits.lastWeeklyReset = null;
+        if (!parsed.activity) parsed.activity = [];
+        saveUserData(parsed);
+        return parsed;
+    }
+
+    function saveUserData(data) {
+        localStorage.setItem("fingrow_user", JSON.stringify(data));
+    }
+
+    function addActivity(userData, actionText) {
+        const today = new Date().toISOString().slice(0,10);
+        userData.activity.unshift({ text: actionText, date: today, type: "habit" });
+        if (userData.activity.length > 15) userData.activity.pop();
+        saveUserData(userData);
+    }
+
+    function isToday(dateStr) {
+        return dateStr === new Date().toISOString().slice(0,10);
+    }
+
+    // Update overall streak based on daily check-in
+    function updateOverallStreak(userData) {
+        const today = new Date().toISOString().slice(0,10);
+        const lastCheckin = userData.habits.lastCheckin;
+        if (!lastCheckin) {
+            userData.habits.currentStreak = 1;
+            userData.habits.longestStreak = Math.max(1, userData.habits.longestStreak || 0);
+            userData.habits.lastCheckin = today;
+            addActivity(userData, "Started a new habit streak! 🔥");
+        } else if (lastCheckin === today) {
+            // already checked in
+            return userData.habits.currentStreak;
+        } else {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterdayStr = yesterday.toISOString().slice(0,10);
+            if (lastCheckin === yesterdayStr) {
+                userData.habits.currentStreak += 1;
+                if (userData.habits.currentStreak > (userData.habits.longestStreak || 0)) {
+                    userData.habits.longestStreak = userData.habits.currentStreak;
+                }
+                addActivity(userData, `🔥 ${userData.habits.currentStreak}-day streak! Keep going.`);
+            } else {
+                userData.habits.currentStreak = 1;
+                addActivity(userData, "Streak reset! Start a new streak today.");
+            }
+            userData.habits.lastCheckin = today;
+        }
+        saveUserData(userData);
+        return userData.habits.currentStreak;
+    }
+
+    // Check milestone rewards
+    function checkAndRewardStreak(userData) {
+        const streak = userData.habits.currentStreak;
+        let rewardGiven = false;
+        if (streak >= 7 && !userData.habits.reward7Given) {
+            userData.portfolio.cash += 500;
+            addActivity(userData, "🎉 7-day streak reward: +$500 fake cash!");
+            userData.habits.reward7Given = true;
+            rewardGiven = true;
+        } 
+        if (streak >= 14 && !userData.habits.reward14Given) {
+            userData.portfolio.cash += 1000;
+            addActivity(userData, "🏆 14-day streak reward: +$1,000 fake cash + Gold Badge!");
+            userData.habits.reward14Given = true;
+            rewardGiven = true;
+        }
+        if (streak >= 30 && !userData.habits.reward30Given) {
+            userData.portfolio.cash += 5000;
+            addActivity(userData, "👑 30-day streak reward: +$5,000 fake cash + Expert Investor Badge!");
+            userData.habits.reward30Given = true;
+            rewardGiven = true;
+        }
+        if (rewardGiven) saveUserData(userData);
+    }
+
+    // Toggle habit completion
+    function toggleHabitCompletion(userData, habitId) {
+        const habit = userData.habits.habitsList.find(h => h.id === habitId);
+        if (!habit) return;
+        const today = new Date().toISOString().slice(0,10);
+        if (habit.frequency === "daily") {
+            if (habit.completedToday) {
+                alert("You already completed this habit today. Come back tomorrow!");
+                return;
+            }
+            habit.completedToday = true;
+            habit.lastCompletedDate = today;
+            habit.streak = (habit.streak || 0) + 1;
+            addActivity(userData, `✅ Completed habit: ${habit.name}`);
+        } else if (habit.frequency === "weekly") {
+            if (habit.completedThisWeek) {
+                alert("You already completed this weekly habit. Next week starts Monday.");
+                return;
+            }
+            habit.completedThisWeek = true;
+            habit.lastCompletedDate = today;
+            habit.streak = (habit.streak || 0) + 1;
+            addActivity(userData, `✅ Completed weekly habit: ${habit.name}`);
+        }
+        saveUserData(userData);
+    }
+
+    // Reset weekly habits on Monday
+    function resetWeeklyIfNeeded(userData) {
+        const today = new Date();
+        const dayOfWeek = today.getDay();
+        const todayStr = today.toISOString().slice(0,10);
+        const lastReset = userData.habits.lastWeeklyReset;
+        if (dayOfWeek === 1 && lastReset !== todayStr) {
+            userData.habits.habitsList.forEach(habit => {
+                if (habit.frequency === "weekly") {
+                    habit.completedThisWeek = false;
+                }
+            });
+            userData.habits.lastWeeklyReset = todayStr;
+            saveUserData(userData);
+        }
+    }
+
+    // Reset daily habits each new day
+    function resetDailyIfNeeded(userData) {
+        const today = new Date().toISOString().slice(0,10);
+        let changed = false;
+        userData.habits.habitsList.forEach(habit => {
+            if (habit.frequency === "daily" && habit.lastCompletedDate !== today) {
+                habit.completedToday = false;
+                changed = true;
+            }
+        });
+        if (changed) saveUserData(userData);
+    }
+
+    // Helper: get next milestone and progress %
+    function getStreakProgress(currentStreak) {
+        let nextMilestone = 7;
+        if (currentStreak >= 7 && currentStreak < 14) nextMilestone = 14;
+        else if (currentStreak >= 14 && currentStreak < 30) nextMilestone = 30;
+        else if (currentStreak >= 30) nextMilestone = 30;
+        else nextMilestone = 7;
+        const progressPercent = Math.min(100, (currentStreak / nextMilestone) * 100);
+        const daysLeft = Math.max(0, nextMilestone - currentStreak);
+        return { nextMilestone, progressPercent, daysLeft };
+    }
+
+    // Render activity feed
+    function renderActivityFeed(userData) {
+        const activityList = document.getElementById("activityList");
+        if (!activityList) return;
+        const activities = userData.activity || [];
+        if (activities.length === 0) {
+            activityList.innerHTML = '<li style="color: #aaa;">✨ Complete habits & check in to see your progress ✨</li>';
+            return;
+        }
+        activityList.innerHTML = activities.slice(0, 7).map(act => `
+            <li>
+                <span class="activity-icon"><i class="fas fa-fire"></i></span>
+                <span class="activity-text">${escapeHtml(act.text)}</span>
+                <span class="activity-date">${act.date}</span>
+            </li>
+        `).join('');
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Main render
+    function renderHabits() {
+        let userData = loadUserData();
+        resetDailyIfNeeded(userData);
+        resetWeeklyIfNeeded(userData);
+        userData = loadUserData(); // refresh after potential resets
+
+        const streak = userData.habits.currentStreak || 0;
+        const longest = userData.habits.longestStreak || 0;
+        const { nextMilestone, progressPercent, daysLeft } = getStreakProgress(streak);
+        
+        // Streak card with progress bar
+        document.getElementById("streakCard").innerHTML = `
+            <div class="streak-content">
+                <div class="streak-number">${streak} days</div>
+                <div class="streak-label"><i class="fas fa-bolt"></i> Current streak</div>
+                <div class="best-streak"><i class="fas fa-trophy"></i> Best: ${longest} days</div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>🔥 ${daysLeft === 0 ? "Maxed out!" : `${daysLeft} days to +$${nextMilestone === 7 ? '500' : nextMilestone === 14 ? '1000' : '5000'}`}</span>
+                        <span>${Math.round(progressPercent)}%</span>
+                    </div>
+                    <div class="progress-bar-bg"><div class="progress-fill" style="width: ${progressPercent}%;"></div></div>
+                </div>
+                <button id="checkinBtn" class="checkin-btn"><i class="fas fa-calendar-check"></i> Check In Today</button>
+            </div>
+        `;
+        
+        const checkinBtn = document.getElementById("checkinBtn");
+        if (checkinBtn) {
+            checkinBtn.addEventListener("click", () => {
+                let user = loadUserData();
+                updateOverallStreak(user);
+                checkAndRewardStreak(user);
+                renderHabits();
+            });
+        }
+
+        // Habits list
+        const habitsListDiv = document.getElementById("habitsList");
+        habitsListDiv.innerHTML = "";
+        for (let habit of userData.habits.habitsList) {
+            const isCompleted = habit.frequency === "daily" ? habit.completedToday : habit.completedThisWeek;
+            const streakDisplay = habit.streak ? `Streak: ${habit.streak} 🔁` : "Not started";
+            const habitDiv = document.createElement("div");
+            habitDiv.className = "habit-item";
+            const icon = habit.frequency === "daily" ? "fa-sun" : "fa-calendar-week";
+            habitDiv.innerHTML = `
+                <div class="habit-info">
+                    <div class="habit-name"><i class="fas ${icon}"></i> ${escapeHtml(habit.name)}</div>
+                    <div class="habit-streak">${streakDisplay} • ${habit.frequency === "daily" ? "Daily" : "Weekly"}</div>
+                </div>
+                <div class="habit-check">
+                    <button class="check-btn ${isCompleted ? 'completed' : ''}" data-id="${habit.id}" ${isCompleted ? 'disabled' : ''}>
+                        ${isCompleted ? '<i class="fas fa-check-circle"></i> Completed' : '<i class="fas fa-check"></i> Check In'}
+                    </button>
+                </div>
+            `;
+            habitsListDiv.appendChild(habitDiv);
+        }
+
+        // attach habit listeners
+        document.querySelectorAll(".check-btn").forEach(btn => {
+            if (!btn.disabled) {
+                btn.addEventListener("click", (e) => {
+                    const habitId = parseInt(btn.getAttribute("data-id"));
+                    let user = loadUserData();
+                    toggleHabitCompletion(user, habitId);
+                    renderHabits();
+                });
+            }
+        });
+
+        // Rewards section with fresh style
+        const rewardsDiv = document.getElementById("rewardsSection");
+        rewardsDiv.innerHTML = `
+            <h3><i class="fas fa-gift"></i> 🏆 Streak Milestones</h3>
+            <div class="reward-item"><span><i class="fas fa-calendar-week"></i> 7 days</span><span>+$500 cash <i class="fas fa-coins"></i></span></div>
+            <div class="reward-item"><span><i class="fas fa-medal"></i> 14 days</span><span>+$1,000 + Gold Badge ⭐</span></div>
+            <div class="reward-item"><span><i class="fas fa-crown"></i> 30 days</span><span>+$5,000 + Expert Badge 🎖️</span></div>
+            <p style="margin-top:1rem; font-size:0.8rem; background:white; border-radius:40px; padding:0.5rem; text-align:center;"><i class="fas fa-info-circle"></i> Keep checking in daily & completing habits to unlock rewards!</p>
+        `;
+        
+        // Activity feed
+        renderActivityFeed(userData);
+    }
+
+    // init
+    renderHabits();
+</script>
+</body>
+</html>

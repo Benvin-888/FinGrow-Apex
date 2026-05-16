@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>FinGrow | Learn, Practice, Grow — Risk-Free Investing</title>
+    <!-- Google Fonts + Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FCFAFE;
+            color: #111827;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced color palette: Purple #7C3AED, Gold #F59E0B */
+        :root {
+            --purple-primary: #7C3AED;
+            --purple-dark: #6D28D9;
+            --purple-soft: #EDE9FE;
+            --purple-glow: rgba(124, 58, 237, 0.2);
+            --gold-primary: #F59E0B;
+            --gold-dark: #D97706;
+            --gold-soft: #FEF3C7;
+            --gray-light: #F9FAFB;
+            --gray-border: #E5E7EB;
+            --text-dark: #1F2937;
+            --text-muted: #6B7280;
+            --shadow-sm: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 25px 35px -12px rgba(0, 0, 0, 0.15);
+            --radius-sm: 1rem;
+            --radius-md: 1.5rem;
+            --radius-full: 9999px;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.5);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* modern glass navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            background: var(--glass-bg);
+            border-bottom: 1px solid rgba(124, 58, 237, 0.15);
+            padding: 0.9rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--purple-primary);
+            filter: drop-shadow(0 2px 5px rgba(124,58,237,0.2));
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary) 0%, var(--gold-primary) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--text-dark);
+            transition: 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--purple-primary);
+        }
+
+        /* modern button styles */
+        .btn-outline, .btn-primary, .btn-large {
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--purple-primary);
+            color: var(--purple-primary);
+            padding: 0.6rem 1.4rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--purple-primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -6px var(--purple-glow);
+        }
+
+        .btn-primary {
+            background: var(--purple-primary);
+            color: white;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 8px rgba(124,58,237,0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--purple-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -8px rgba(124,58,237,0.4);
+        }
+
+        .btn-large {
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-gold {
+            background: var(--gold-primary);
+            color: #1F2937;
+            box-shadow: 0 4px 12px rgba(245,158,11,0.25);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Hero section with abstract blobs and glass */
+        .hero {
+            position: relative;
+            padding: 6rem 0 5rem;
+            background: linear-gradient(145deg, #FFFFFF 0%, #F5F3FF 100%);
+            overflow: hidden;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 3;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #111827 0%, var(--purple-primary) 45%, var(--gold-primary) 85%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, var(--gold-primary), #FBBF24);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 2rem;
+            line-height: 1.4;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .guest-note {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: rgba(255,255,240,0.7);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius-full);
+        }
+
+        /* floating blobs for glass effect */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: #C4B5FD;
+            top: -100px;
+            left: -80px;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: #FDE68A;
+            bottom: -150px;
+            right: -100px;
+        }
+
+        /* features grid */
+        .features {
+            padding: 5rem 0;
+            background: white;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--text-dark), var(--purple-primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(4px);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(124,58,237,0.1);
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--purple-primary);
+            box-shadow: var(--shadow-lg);
+            background: white;
+        }
+
+        .feature-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            color: var(--purple-primary);
+            background: var(--purple-soft);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: 0.2s;
+        }
+
+        /* how it works modern */
+        .how-it-works {
+            background: linear-gradient(120deg, #F9FAFB, #F3F4F6);
+            padding: 5rem 0;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .step {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            width: 240px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+            border-bottom: 3px solid var(--gold-primary);
+        }
+
+        .step:hover {
+            transform: scale(1.02);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--purple-primary), var(--gold-primary));
+            width: 56px;
+            height: 56px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.6rem;
+            margin: 0 auto 1rem;
+            color: white;
+            box-shadow: 0 8px 14px -6px rgba(124,58,237,0.4);
+        }
+
+        .step-arrow {
+            font-size: 2.2rem;
+            color: var(--purple-primary);
+            font-weight: 300;
+        }
+
+        /* lesson cards premium */
+        .lessons-preview {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .lesson-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background: var(--gray-light);
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+            padding: 1.8rem;
+            border-left: 5px solid var(--gold-primary);
+            transition: all 0.3s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .lesson-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateX(6px);
+        }
+
+        .lesson-content {
+            flex: 2;
+        }
+
+        .lesson-media {
+            flex: 1;
+            min-width: 240px;
+            border-radius: 1.2rem;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        .lesson-media img, .lesson-media iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+            display: block;
+        }
+
+        .lesson-badge {
+            background: var(--purple-soft);
+            color: var(--purple-primary);
+            border-radius: 50px;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* apex ad glass */
+        .apex-ad {
+            background: linear-gradient(115deg, #1E1B2E 0%, #2A2342 100%);
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 2rem;
+            margin: 2rem 0 4rem;
+            border: 1px solid rgba(245,158,11,0.3);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.3);
+        }
+
+        .apex-ad h3 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .badge-gold {
+            background: var(--gold-primary);
+            color: #1F2937;
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 800;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        footer {
+            background: #FFFFFF;
+            padding: 3rem 0;
+            border-top: 1px solid var(--gray-border);
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card, .lesson-card, .step {
+            animation: fadeUp 0.6s ease-out forwards;
+        }
+
+        @media (max-width: 800px) {
+            .hero-title { font-size: 2.5rem; }
+            .nav-container { flex-direction: column; }
+            .step-arrow { display: none; }
+            .container { padding: 0 1.5rem; }
+            .section-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-container">
+        <div class="logo">
+            <i class="fas fa-chart-line logo-icon"></i>
+            <span class="logo-text">FinGrow</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#lessons">Lessons</a>
+            <a href="#how-it-works">How it works</a>
+            <button class="btn-outline" onclick="location.href='signup.html'">Log In</button>
+            <button class="btn-primary" onclick="location.href='signup.html'">Sign Up</button>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <!-- Hero with glass blobs -->
+    <section class="hero">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="container">
+            <h1 class="hero-title">Learn. Practice. <span class="highlight">Grow.</span></h1>
+            <p class="hero-subtitle">Master stocks, crypto, and investing habits — without risking real money. From zero to confident investor.</p>
+            <div class="hero-buttons">
+                <button class="btn-large btn-primary" id="startFreeBtn"><i class="fas fa-play"></i> Start Learning — It's Free</button>
+                <button class="btn-large btn-outline" id="guestBtnMock"><i class="fas fa-user-astronaut"></i> Try as Guest → 1 hour</button>
+            </div>
+            <p class="guest-note"><i class="fas fa-gem"></i> No credit card. Guest mode gives you full access for 1 hour — then sign up to save progress.</p>
+        </div>
+    </section>
+
+    <!-- Features with modern icons -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Everything you need, all in one place</h2>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-book-open"></i></div><h3>Deep Lessons</h3><p>Detailed articles, charts, YouTube explainers & quizzes. Start from basics → real investor mindset.</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-chart-simple"></i></div><h3>Risk-free Simulator</h3><p>$10,000 fake cash. Trade stocks, crypto, ETFs. See your P&L without fear.</p></div>
+                <div class="feature-card"><div class="feature-icon"><i class="fas fa-fire"></i></div><h3>Habit + Streaks</h3><p>Track savings, learning consistency. Earn gold badges & bonus fake cash.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Lessons Preview with modern design -->
+    <section id="lessons" class="lessons-preview">
+        <div class="container">
+            <h2 class="section-title">From beginner to real investor — detailed lessons</h2>
+            
+            <div class="lesson-card">
+                <div class="lesson-content">
+                    <span class="lesson-badge"><i class="fas fa-graduation-cap"></i> Lesson 1 • Beginner</span>
+                    <h3 class="lesson-title">What is a Stock? Ownership & Dividends</h3>
+                    <p>Learn what it means to own a piece of a company. We break down shares, stock exchanges, dividends, and why prices move. Includes real-world examples and a 5-min animated video.</p>
+                    <button class="btn-primary btn-sm start-lesson-mock" style="margin-top: 1rem;"><i class="fas fa-arrow-right"></i> Start Lesson →</button>
+                </div>
+                <div class="lesson-media">
+                    <img src="https://images.openai.com/static-rsc-4/mR9yGonXJhZcm63B_e8IVMKzRGAXjbLN_EfkDtXe7YztFAFe1y0vVlhhE4KKhHp-4UV-PXaToh0g7PW6hd07zI6mdStzhMGcdEw-zHYEtbrsVndoWC51m6sxk75xJTH0ywsnbTWtQ3gkHqmhZBt__S4Y9b0IVY_XcuA2_otESoZ9iPLAEhRCV1FGY8KR_jYK?purpose=fullsize" alt="Stock illustration" style="width:100%; border-radius:1rem;">
+                </div>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-content">
+                    <span class="lesson-badge"><i class="fas fa-chart-line"></i> Lesson 2 • Risk & Reward</span>
+                    <h3 class="lesson-title">Why higher returns come with higher risk</h3>
+                    <p>Understand volatility, risk tolerance, and how to balance your portfolio. This lesson includes a video from a trusted finance educator.</p>
+                    <button class="btn-primary btn-sm start-lesson-mock" style="margin-top: 1rem;"><i class="fas fa-arrow-right"></i> Start Lesson →</button>
+                </div>
+                <div class="lesson-media">
+                    <img src="https://images.openai.com/static-rsc-4/ZD9fuM7o9VhSwncqjQYqDaX25N6mvWZp_Etx-arJWzi17w7s8B7zknqwAWHsvPQuSQrrx7aMSQo5a8KVW8RNluZpkctRHgaid_yDAAZWj5is2qpS_0cyZm9wnwZ0zN2qRmv5yjhmUtHX2iXtNMHJS1rNp3lYu8X4U75FvMZHmnnrHMYKglHK0uDKCkdkp4IJ?purpose=fullsize" style="width:100%; border-radius:1rem;">
+                </div>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-content">
+                    <span class="lesson-badge"><i class="fas fa-pie-chart"></i> Lesson 3 • Diversification</span>
+                    <h3 class="lesson-title">Don't put all eggs in one basket</h3>
+                    <p>Why mixing stocks, bonds, crypto, and cash reduces risk. Learn with portfolio visual examples.</p>
+                    <button class="btn-primary btn-sm start-lesson-mock" style="margin-top: 1rem;"><i class="fas fa-arrow-right"></i> Start Lesson →</button>
+                </div>
+                <div class="lesson-media">
+                    <img src="https://images.openai.com/static-rsc-4/vNACVGR3TnHk5c0Y7QS-FjZYD0MvWRZL5M9MHlw3t4-L0AUluvgPARItD0ZXrQZOfiJQpUD7-sdgX6H_tO7RGq4qq9O1b_0I6s9lt_wz2G2OqBWKYP44k6A0YsUiMFW9kMHqUNt6OR-hx4_J6ch6Gw7oSCDaRaBpjmIW2s3gYm50xdfTWeOmKBE1f-C71S9n?purpose=fullsize" style="width:100%; border-radius:1rem;">
+                </div>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-content">
+                    <span class="lesson-badge"><i class="fas fa-coins"></i> Lesson 4 • Dollar-Cost Averaging</span>
+                    <h3 class="lesson-title">Invest regularly, ignore the noise</h3>
+                    <p>Strategy used by pro investors. See how investing $50 every month beats trying to time the market.</p>
+                    <button class="btn-primary btn-sm start-lesson-mock" style="margin-top: 1rem;"><i class="fas fa-arrow-right"></i> Start Lesson →</button>
+                </div>
+                <div class="lesson-media">
+                    <img src="https://images.openai.com/static-rsc-4/iTumf51Cfh8z80ZoLrZcTYZSLHIqpp4splV0iM52FL-76dSzbVv95vEDSVZfLO6S5mDZ6oFSbS8AXJhkIefOUaMsGmleS_9xB6q-YD_aArosTMYUYvVEgKJmczM3eORsFttkh5tLEy0uUJjmXZ1bTFNaEtUsU7XgNvYYzBXKBejbZMBr1OE_XATIiHLCvkTq?purpose=fullsize" style="width:100%; border-radius:1rem;">
+                </div>
+            </div>
+
+            <div class="lesson-card">
+                <div class="lesson-content">
+                    <span class="lesson-badge"><i class="fab fa-bitcoin"></i> Lesson 5 • Crypto Basics</span>
+                    <h3 class="lesson-title">Bitcoin, blockchain, and volatility</h3>
+                    <p>What is crypto? Risks, potential, and how to think about it as a beginner.</p>
+                    <button class="btn-primary btn-sm start-lesson-mock" style="margin-top: 1rem;"><i class="fas fa-arrow-right"></i> Start Lesson →</button>
+                </div>
+                <div class="lesson-media">
+                    <img src="https://images.openai.com/static-rsc-4/BDzKc1Pafbb3bEfmHNQYrTObNGi9pavBKtXRr0aVcmdtKPVWPOOok88tOfHTuDCyYuIhoDidxu8G3sRo1OHW3g5Zw0WcVPqgIlpcaPu_B7XjvuyI2l_FRMqstCLx0tIBkMejwuODRl9ti7y5694C1XD_Gq0_QeNZwWX9ANBPckUJ-SEwGA0uYdSzeJTCIPtd?purpose=fullsize" style="width:100%; border-radius:1rem;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it works with modern icons and arrows -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">Your learning loop</h2>
+            <div class="steps">
+                <div class="step"><div class="step-number"><i class="fas fa-book-reader"></i></div><h3>Take a lesson</h3><p>Watch, read, quiz</p></div>
+                <div class="step-arrow"><i class="fas fa-arrow-right fa-fw"></i></div>
+                <div class="step"><div class="step-number"><i class="fas fa-chart-line"></i></div><h3>Practice in simulator</h3><p>Use fake money</p></div>
+                <div class="step-arrow"><i class="fas fa-arrow-right fa-fw"></i></div>
+                <div class="step"><div class="step-number"><i class="fas fa-calendar-check"></i></div><h3>Track habits</h3><p>Earn rewards & streaks</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Apex Tech Solutions Advertisement with glass -->
+    <div class="container">
+        <div class="apex-ad">
+            <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 0.5rem; display: inline-block;"></i>
+            <h3>Powered by <span style="color: var(--gold-primary);">Apex Tech Solutions</span></h3>
+            <p>We build digital ecosystems that educate & empower. From fintech to edtech — innovation at scale.</p>
+            <div class="badge-gold"><i class="fas fa-rocket"></i> Trusted by 50+ startups</div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><i class="far fa-copyright"></i> 2026 FinGrow — part of Apex Tech Solutions. Learn. Simulate. Grow.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;"><i class="fas fa-shield-alt"></i> Virtual simulator only. Not real financial advice.</p>
+        </div>
+    </footer>
+</main>
+
+<script>
+    // Enhanced mock interactions with modern feedback
+    document.querySelectorAll('#startFreeBtn, #guestBtnMock, .start-lesson-mock').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            if(btn.id === 'guestBtnMock') {
+                alert("✨ Guest mode activated (simulated). You have 1 hour to explore FinGrow. Your progress will be saved locally until you sign up.\n\n");
+                window.location.href = "dashboard.html";
+            } else if(btn.id === 'startFreeBtn') {
+                alert("🚀 Sign up ...");
+                window.location.href = "signup.html";
+            } else if(btn.classList.contains('start-lesson-mock')) {
+                alert("📘 Sign up or Sign in to continue.");
+                window.location.href = "signup.html";
+            }
+        });
+    });
+    // Additional navigation consistency for missing buttons
+    const loginMock = document.querySelector('.nav-links .btn-outline');
+    const signupMock = document.querySelector('.nav-links .btn-primary');
+    if(loginMock) loginMock.addEventListener('click', () => alert("🔐 Secure login coming. UI enriched with modern purple/gold!"));
+    if(signupMock) signupMock.addEventListener('click', () => alert("🎉 Join FinGrow – immersive learning, risk-free simulator. Full stack coming!"));
+</script>
+
+</body>
+</html>

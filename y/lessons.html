@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>FinGrow Lessons | From zero to investor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1a1a2e;
+            line-height: 1.5;
+        }
+        :root {
+            --purple-primary: #6C47FF;
+            --purple-dark: #5a3ad1;
+            --purple-soft: #f0ebff;
+            --gold-primary: #E6B422;
+            --gold-dark: #c99f1a;
+            --gold-soft: #fff8e7;
+            --gray-light: #f8f9fc;
+            --gray-border: #eef2f6;
+            --text-muted: #5a6874;
+            --shadow-sm: 0 10px 25px -5px rgba(0,0,0,0.05);
+            --shadow-md: 0 20px 35px -12px rgba(0,0,0,0.08);
+            --radius-card: 1.5rem;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        /* Navbar */
+        .navbar {
+            background: white;
+            border-bottom: 1px solid var(--gray-border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .logo img {
+            height: 44px;
+            width: auto;
+        }
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), var(--gold-primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--purple-primary);
+            font-weight: 600;
+        }
+        /* Header */
+        .page-header {
+            margin: 2rem 0 1rem;
+        }
+        .progress-banner {
+            background: var(--purple-soft);
+            border-radius: var(--radius-card);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .progress-text {
+            font-weight: 600;
+        }
+        .progress-bar-bg {
+            background: #ddd;
+            border-radius: 40px;
+            height: 10px;
+            width: 250px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: var(--gold-primary);
+            width: 0%;
+            height: 100%;
+            border-radius: 40px;
+        }
+        /* Lesson Cards */
+        .lessons-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .lesson-card {
+            background: white;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .lesson-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--purple-soft);
+        }
+        .lesson-thumb {
+            flex: 1;
+            min-width: 240px;
+            background: var(--gray-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .lesson-thumb img, .lesson-thumb iframe {
+            width: 100%;
+            border-radius: 1rem;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        .lesson-info {
+            flex: 2;
+            padding: 1.5rem;
+        }
+        .lesson-badge {
+            display: inline-block;
+            background: var(--purple-soft);
+            color: var(--purple-primary);
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+        .lesson-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .lesson-description {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .lesson-meta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .status-completed {
+            color: #10b981;
+            font-weight: 600;
+        }
+        .status-locked {
+            color: var(--text-muted);
+        }
+        .btn-start {
+            background: var(--purple-primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-start:hover {
+            background: var(--purple-dark);
+        }
+        .btn-locked {
+            background: #e2e8f0;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--gray-border);
+            margin-top: 2rem;
+        }
+        @media (max-width: 700px) {
+            .container { padding: 0 1rem; }
+            .lesson-card { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-container">
+        <div class="logo">
+            <a href="index.html"><img src="Logo.png" alt="FinGrow" onerror="this.src='https://placehold.co/50x50?text=FG'"></a>
+            <span class="logo-text">FinGrow</span>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="lessons.html" class="active">Lessons</a>
+            <a href="simulator.html">Simulator</a>
+            <a href="habits.html">Habits</a>
+            <a href="profile.html">Profile</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="page-header">
+        <h1>📚 Lessons Library</h1>
+        <p>From absolute beginner to confident investor — each lesson includes videos, examples, and quizzes.</p>
+    </div>
+
+    <div class="progress-banner" id="progressBanner">
+        <!-- dynamic progress -->
+    </div>
+
+    <div class="lessons-grid" id="lessonsGrid">
+        <!-- lessons injected via JS -->
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 FinGrow — part of Apex Tech Solutions. Knowledge is the best investment.</p>
+</footer>
+
+<script>
+    // Lesson data (detailed, with YouTube, images)
+    const lessonsData = [
+        {
+            id: 1,
+            title: "What is a Stock?",
+            description: "Learn what stocks really are, how ownership works, dividends, and why prices move. Includes animated explainer and real-life example.",
+            badge: "Beginner • 15 min",
+            thumbnail: "https://img.youtube.com/vi/p7HKvqRI_Bo/maxresdefault.jpg", // placeholder, will use embed
+            youtubeId: "p7HKvqRI_Bo",
+            contentSnippet: "A stock represents a share in the ownership of a company...",
+            difficulty: "beginner"
+        },
+        {
+            id: 2,
+            title: "Risk vs. Reward",
+            description: "Why do some investments grow faster? Understand volatility, risk tolerance, and how to balance safety with growth.",
+            badge: "Beginner • 12 min",
+            thumbnail: "https://img.youtube.com/vi/5G1g0w6eW5I/maxresdefault.jpg",
+            youtubeId: "5G1g0w6eW5I",
+            difficulty: "beginner"
+        },
+        {
+            id: 3,
+            title: "Diversification",
+            description: "Don't put all eggs in one basket. Learn how spreading investments across stocks, bonds, and crypto reduces risk.",
+            badge: "Intermediate • 18 min",
+            thumbnail: "https://img.youtube.com/vi/jg_MflByI3Y/maxresdefault.jpg",
+            youtubeId: "jg_MflByI3Y",
+            difficulty: "intermediate"
+        },
+        {
+            id: 4,
+            title: "Dollar-Cost Averaging",
+            description: "Invest a fixed amount regularly — ignore market timing. See why this strategy beats trying to predict the market.",
+            badge: "Intermediate • 20 min",
+            thumbnail: "https://img.youtube.com/vi/wQ1RAG5-Pcs/maxresdefault.jpg",
+            youtubeId: "wQ1RAG5-Pcs",
+            difficulty: "intermediate"
+        },
+        {
+            id: 5,
+            title: "Crypto Basics",
+            description: "Bitcoin, blockchain, volatility, and how to think about crypto as a beginner. Risks and opportunities.",
+            badge: "Advanced • 25 min",
+            thumbnail: "https://img.youtube.com/vi/bBC-nXj3Ng4/maxresdefault.jpg",
+            youtubeId: "bBC-nXj3Ng4",
+            difficulty: "advanced"
+        }
+    ];
+
+    // Load user data from localStorage
+    function loadUserData() {
+        let data = localStorage.getItem("fingrow_user");
+        if (!data) {
+            // create minimal default
+            const defaultData = {
+                name: "Alex",
+                lessonsCompleted: [],
+                portfolio: { cash: 10000, holdings: [] },
+                habits: { currentStreak: 0, longestStreak: 0, lastCheckin: null, habitsList: [] },
+                activity: [],
+                totalPortfolioValue: 10000
+            };
+            localStorage.setItem("fingrow_user", JSON.stringify(defaultData));
+            return defaultData;
+        }
+        return JSON.parse(data);
+    }
+
+    function saveUserData(data) {
+        localStorage.setItem("fingrow_user", JSON.stringify(data));
+    }
+
+    // Mark lesson as complete (called when user clicks "Mark Complete" on detail page, but we'll simulate from here if needed)
+    // For library, we only display status; completion happens via lesson.html. 
+    // But we'll provide a unlock system: lessons must be completed in order? For now, we allow any order but we show completion status.
+    // Also we will add a "Start Lesson" button that goes to lesson.html?id=X.
+
+    function renderLessons() {
+        const userData = loadUserData();
+        const completedIds = userData.lessonsCompleted || [];
+        const total = lessonsData.length;
+        const completedCount = completedIds.length;
+        const percent = (completedCount / total) * 100;
+
+        // Progress banner
+        const banner = document.getElementById("progressBanner");
+        banner.innerHTML = `
+            <div class="progress-text">📖 ${completedCount} of ${total} lessons completed</div>
+            <div class="progress-bar-bg"><div class="progress-fill" style="width: ${percent}%;"></div></div>
+            <div>${completedCount === total ? "🎉 Master Investor! 🎉" : "Keep going — each lesson builds real skill."}</div>
+        `;
+
+        const grid = document.getElementById("lessonsGrid");
+        grid.innerHTML = "";
+        for (let lesson of lessonsData) {
+            const isCompleted = completedIds.includes(lesson.id);
+            // For sequential unlock? Not required, but we can add a lock if previous not completed? Optional.
+            // We'll keep all accessible but mark completion.
+            const statusHtml = isCompleted ? '<span class="status-completed"><i class="fas fa-check-circle"></i> Completed</span>' : '<span class="status-locked"><i class="far fa-circle"></i> Not started</span>';
+            const buttonHtml = `<button class="btn-start" data-id="${lesson.id}">Start Lesson →</button>`;
+            
+            // Use embedded YouTube thumbnail or iframe preview? For card, we use static image from youtube.
+            const thumbUrl = `https://img.youtube.com/vi/${lesson.youtubeId}/hqdefault.jpg`;
+            const card = document.createElement("div");
+            card.className = "lesson-card";
+            card.innerHTML = `
+                <div class="lesson-thumb">
+                    <img src="${thumbUrl}" alt="${lesson.title}" loading="lazy">
+                </div>
+                <div class="lesson-info">
+                    <div class="lesson-badge">${lesson.badge}</div>
+                    <div class="lesson-title">${lesson.title}</div>
+                    <div class="lesson-description">${lesson.description}</div>
+                    <div class="lesson-meta">
+                        ${statusHtml}
+                        ${buttonHtml}
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+
+        // Attach event listeners to all Start buttons
+        document.querySelectorAll(".btn-start").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const lessonId = parseInt(btn.getAttribute("data-id"));
+                window.location.href = `lesson.html?id=${lessonId}`;
+            });
+        });
+    }
+
+    renderLessons();
+</script>
+</body>
+</html>

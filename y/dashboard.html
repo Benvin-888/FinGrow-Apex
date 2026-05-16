@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>FinGrow | Advanced Learning Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f9fe;
+            color: #121826;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        :root {
+            --purple-primary: #6C47FF;
+            --purple-dark: #5038c7;
+            --purple-glow: rgba(108, 71, 255, 0.2);
+            --gold-primary: #E6B422;
+            --gold-dark: #c99f1a;
+            --gold-soft: #fff2dc;
+            --gray-light: #f8fafd;
+            --gray-border: rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 35px -12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0,0,0,0.02);
+            --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.04);
+            --radius-card: 1.75rem;
+            --transition-smooth: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        /* animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            right: -10%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle at 70% 20%, rgba(108,71,255,0.08), transparent 70%);
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -10%;
+            left: -5%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle at 20% 90%, rgba(230,180,34,0.08), transparent 70%);
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* navbar glass */
+        .navbar {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(108, 71, 255, 0.1);
+            padding: 0.9rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--purple-primary), var(--gold-primary));
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 18px rgba(108,71,255,0.2);
+            overflow: hidden;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), #B8860B);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #5c6b7e;
+            transition: var(--transition-smooth);
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2.5px;
+            background: linear-gradient(90deg, var(--purple-primary), var(--gold-primary));
+            border-radius: 4px;
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover:after, .nav-links a.active:after {
+            width: 100%;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--purple-primary);
+            font-weight: 600;
+        }
+
+        .btn-outline, .btn-primary, .btn-sm {
+            border-radius: 60px;
+            padding: 0.6rem 1.4rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition-smooth);
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(105deg, var(--purple-primary), #836eff);
+            color: white;
+            box-shadow: 0 4px 12px rgba(108,71,255,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -8px rgba(108,71,255,0.45);
+            background: linear-gradient(105deg, var(--purple-dark), #6C47FF);
+        }
+
+        .btn-sm {
+            background: rgba(108, 71, 255, 0.1);
+            color: var(--purple-primary);
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-sm:hover {
+            background: var(--purple-primary);
+            color: white;
+            transform: scale(0.97);
+        }
+
+        /* stats grid modern */
+        .dashboard-header {
+            margin: 2rem 0 1.8rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #1F2937, #374151);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .date-badge {
+            font-size: 0.85rem;
+            color: #5c6b7e;
+            background: rgba(108,71,255,0.08);
+            display: inline-block;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            margin-top: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.6rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border-radius: var(--radius-card);
+            padding: 1.4rem 1.5rem;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-glass);
+            cursor: default;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 35px -15px rgba(0,0,0,0.1);
+            border-color: rgba(108,71,255,0.2);
+            background: white;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            background: linear-gradient(145deg, #f0f2fe, #ffffff);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 28px;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: #6c7a8e;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0.3rem 0;
+            letter-spacing: -0.02em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e9eef3;
+            border-radius: 10px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--purple-primary), var(--gold-primary));
+            border-radius: 10px;
+            width: 0%;
+        }
+
+        .next-action {
+            background: linear-gradient(125deg, #ffffff, #fefaf0);
+            border-radius: var(--radius-card);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(230,180,34,0.25);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* glass card */
+        .card {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.7);
+            border-radius: var(--radius-card);
+            padding: 1.6rem;
+            box-shadow: var(--shadow-glass);
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            background: white;
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .asset-row, .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .asset-name { font-weight: 700; }
+        .asset-change.positive { color: #10b981; font-weight: 600; }
+        .asset-change.negative { color: #ef4444; font-weight: 600; }
+
+        .activity-item i {
+            width: 28px;
+            color: var(--purple-primary);
+        }
+
+        .two-columns {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #7c8ba0;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            margin-top: 2rem;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 780px) {
+            .container { padding: 0 1.25rem; }
+            .nav-container { flex-direction: column; align-items: center; gap: 0.7rem; }
+            .nav-links { justify-content: center; gap: 1.2rem; }
+            .dashboard-header h1 { font-size: 1.8rem; }
+            .stat-value { font-size: 1.7rem; }
+            .next-action { flex-direction: column; gap: 1rem; align-items: flex-start; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { gap: 1rem; }
+            .card { padding: 1.2rem; }
+            .btn-primary, .btn-sm { padding: 0.5rem 1rem; }
+        }
+
+        /* micro animations */
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(12px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .stat-card, .card, .next-action {
+            animation: fadeSlide 0.4s ease-out forwards;
+        }
+
+        .habit-glow {
+            background: linear-gradient(90deg, #fff2dc, #fffcf0);
+            border-left: 4px solid var(--gold-primary);
+        }
+
+        .badge-profit {
+            background: #10b98110;
+            border-radius: 30px;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+            <div class="logo-icon">
+                <img src="Logo.png" alt="FinGrow" onerror="this.src='https://placehold.co/50x50?text=FG'; this.onerror=null;">
+            </div>
+            <span class="logo-text">FinGrow</span>
+        </a>
+        <div class="nav-links">
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="lessons.html">Lessons</a>
+            <a href="simulator.html">Simulator</a>
+            <a href="habits.html">Habits</a>
+            <a href="profile.html">Profile</a>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div class="dashboard-header">
+        <h1>Welcome back, <span id="userName">Alex</span> <span style="font-size:1.8rem;">✨</span></h1>
+        <div class="date-badge" id="currentDate"></div>
+    </div>
+
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <div class="next-action" id="nextAction"></div>
+
+    <div class="two-columns">
+        <div class="card">
+            <h3><i class="fas fa-chart-pie" style="color: var(--purple-primary);"></i> Portfolio Snapshot</h3>
+            <div id="portfolioSnapshot">Loading...</div>
+            <a href="simulator.html" style="display: inline-block; margin-top: 1rem; font-size: 0.85rem; font-weight: 500; color: var(--purple-primary);"><i class="fas fa-arrow-right"></i> Simulator →</a>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-clock"></i> Recent Activity</h3>
+            <div id="activityFeed">Loading...</div>
+        </div>
+    </div>
+
+    <div class="card habit-glow" style="margin-bottom: 2rem;">
+        <h3><i class="fas fa-fire" style="color: var(--gold-primary);"></i> Habit Streak & Motivation</h3>
+        <div id="habitStreakReminder">Loading...</div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 FinGrow — Virtual investing simulator. Learn, practice, grow.</p>
+</footer>
+
+<script>
+    // ------------------------------
+    // MOCK DATA & ENHANCED UI LOGIC (preserves all functionality)
+    // ------------------------------
+    const defaultUserData = {
+        name: "Alex",
+        lessonsCompleted: [1, 2],
+        portfolio: {
+            cash: 8500,
+            holdings: [
+                { symbol: "AAPL", shares: 8, avgPrice: 172.50 },
+                { symbol: "BTC", shares: 0.02, avgPrice: 48000 },
+                { symbol: "SPY", shares: 5, avgPrice: 450 }
+            ]
+        },
+        habits: {
+            currentStreak: 5,
+            longestStreak: 7,
+            lastCheckin: "2026-05-14",
+            habitsList: [
+                { id: 1, name: "Save $50 this week", completedThisWeek: true, streak: 3 },
+                { id: 2, name: "Read 1 lesson", completedToday: true, streak: 5 },
+                { id: 3, name: "Log into FinGrow", completedToday: true, streak: 5 }
+            ]
+        },
+        activity: [
+            { text: "Bought 5 shares of AAPL", date: "2026-05-14", type: "trade" },
+            { text: "Completed Lesson 2: Risk vs Reward", date: "2026-05-13", type: "lesson" },
+            { text: "Logged savings habit (+3 day streak)", date: "2026-05-12", type: "habit" }
+        ],
+        totalPortfolioValue: 12450
+    };
+
+    const currentPrices = { AAPL: 185.75, BTC: 62000, SPY: 475.30 };
+    const totalLessons = 5;
+    const lessonTitles = {1:"What is a Stock?", 2:"Risk vs Reward", 3:"Diversification", 4:"Dollar-Cost Averaging", 5:"Crypto Basics"};
+
+    function loadUserData() {
+        let data = localStorage.getItem("fingrow_user");
+        if (!data) {
+            let holdingsVal = 0;
+            defaultUserData.portfolio.holdings.forEach(h => {
+                holdingsVal += h.shares * (currentPrices[h.symbol] || h.avgPrice);
+            });
+            defaultUserData.totalPortfolioValue = defaultUserData.portfolio.cash + holdingsVal;
+            localStorage.setItem("fingrow_user", JSON.stringify(defaultUserData));
+            return defaultUserData;
+        }
+        return JSON.parse(data);
+    }
+
+    function saveUserData(data) {
+        localStorage.setItem("fingrow_user", JSON.stringify(data));
+    }
+
+    function recalcPortfolioValue(userData) {
+        let holdingsValue = 0;
+        userData.portfolio.holdings.forEach(h => {
+            const price = currentPrices[h.symbol] || h.avgPrice;
+            holdingsValue += h.shares * price;
+        });
+        const total = userData.portfolio.cash + holdingsValue;
+        userData.totalPortfolioValue = total;
+        return total;
+    }
+
+    function computeUnrealizedPL(userData) {
+        let totalCost = 0;
+        let totalCurrent = 0;
+        userData.portfolio.holdings.forEach(h => {
+            const price = currentPrices[h.symbol] || h.avgPrice;
+            totalCost += h.shares * h.avgPrice;
+            totalCurrent += h.shares * price;
+        });
+        return { profit: totalCurrent - totalCost, percent: totalCost ? ((totalCurrent - totalCost)/totalCost)*100 : 0 };
+    }
+
+    function renderDashboard() {
+        let userData = loadUserData();
+        const portfolioValue = recalcPortfolioValue(userData);
+        userData.totalPortfolioValue = portfolioValue;
+        saveUserData(userData);
+
+        // UI name & date
+        document.getElementById("userName").innerText = userData.name || "Investor";
+        const now = new Date();
+        document.getElementById("currentDate").innerHTML = `<i class="far fa-calendar-alt"></i> ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+
+        const lessonsDone = userData.lessonsCompleted.length;
+        const habitStreak = userData.habits.currentStreak || 0;
+        const plData = computeUnrealizedPL(userData);
+        const profitLoss = plData.profit;
+        const profitFormatted = profitLoss >= 0 ? `+$${profitLoss.toFixed(2)}` : `-$${Math.abs(profitLoss).toFixed(2)}`;
+        const profitClass = profitLoss >= 0 ? "positive" : "negative";
+
+        // Progress bar width for lessons
+        const lessonPercent = (lessonsDone / totalLessons) * 100;
+
+        // Stats Grid (4 cards modern)
+        document.getElementById("statsGrid").innerHTML = `
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-graduation-cap" style="color: var(--purple-primary);"></i></div>
+                <div class="stat-label">Lessons Mastered</div>
+                <div class="stat-value">${lessonsDone}/${totalLessons}</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: ${lessonPercent}%;"></div></div>
+                <div class="stat-sub">${lessonsDone === totalLessons ? "🏆 Fully learned!" : `${totalLessons - lessonsDone} remaining`}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-coins" style="color: #e6b422;"></i></div>
+                <div class="stat-label">Portfolio Value</div>
+                <div class="stat-value">$${portfolioValue.toLocaleString()}</div>
+                <div class="stat-sub">Cash + investments</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-fire" style="color: #f97316;"></i></div>
+                <div class="stat-label">Current Streak</div>
+                <div class="stat-value">${habitStreak} days</div>
+                <div class="stat-sub">Best: ${userData.habits.longestStreak} days 🔥</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-chart-simple" style="color: #10b981;"></i></div>
+                <div class="stat-label">Unrealized P&L</div>
+                <div class="stat-value ${profitClass}">${profitFormatted}</div>
+                <div class="stat-sub">${plData.percent.toFixed(2)}% ${profitLoss >= 0 ? 'gain' : 'loss'}</div>
+            </div>
+        `;
+
+        // NEXT ACTION LOGIC
+        let nextLessonId = 1;
+        for (let i = 1; i <= totalLessons; i++) {
+            if (!userData.lessonsCompleted.includes(i)) { nextLessonId = i; break; }
+        }
+        const nextActionDiv = document.getElementById("nextAction");
+        if (lessonsDone < totalLessons) {
+            nextActionDiv.innerHTML = `
+                <div style="display: flex; gap: 1rem; align-items: center;"><i class="fas fa-book-open fa-2x" style="color: var(--purple-primary);"></i> <div><strong style="font-size:1.1rem;">📖 Next lesson:</strong> ${lessonTitles[nextLessonId]}<br><span style="font-size:0.8rem;">Level up your financial skills →</span></div></div>
+                <button class="btn-primary" id="continueLessonBtn"><i class="fas fa-arrow-right"></i> Continue Learning</button>
+            `;
+            document.getElementById("continueLessonBtn")?.addEventListener("click", () => window.location.href = `lesson.html?id=${nextLessonId}`);
+        } else {
+            nextActionDiv.innerHTML = `
+                <div><i class="fas fa-trophy" style="color: gold; font-size: 2rem; margin-right: 1rem;"></i> <span style="font-weight: 700;">🏁 All lessons complete! You’re a finance hero.</span><br><span style="font-size:0.8rem;">Master trading in simulator</span></div>
+                <button class="btn-primary" id="goSimulatorBtn"><i class="fas fa-chart-line"></i> Practice Simulator</button>
+            `;
+            document.getElementById("goSimulatorBtn")?.addEventListener("click", () => window.location.href = "simulator.html");
+        }
+
+        // Portfolio Snapshot enhanced
+        let snapshotHtml = `<div class="asset-row" style="font-weight:500;"><span><i class="fas fa-dollar-sign"></i> Cash available</span><span><strong>$${userData.portfolio.cash.toLocaleString()}</strong></span></div>`;
+        userData.portfolio.holdings.forEach(h => {
+            const currPrice = currentPrices[h.symbol] || h.avgPrice;
+            const totalValue = h.shares * currPrice;
+            const profitLossHold = (currPrice - h.avgPrice) * h.shares;
+            const changeClass = profitLossHold >= 0 ? "positive" : "negative";
+            snapshotHtml += `
+                <div class="asset-row">
+                    <span class="asset-name"><i class="fab ${h.symbol === 'BTC' ? 'fa-bitcoin' : 'fa-chart-simple'}"></i> ${h.symbol}</span>
+                    <span>${h.shares} @ $${currPrice.toFixed(2)}</span>
+                    <span class="asset-change ${changeClass}">${profitLossHold >= 0 ? '+' : ''}$${profitLossHold.toFixed(2)}</span>
+                </div>
+            `;
+        });
+        snapshotHtml += `<div class="asset-row" style="font-weight:800; border-top:2px solid rgba(230,180,34,0.5); margin-top:0.5rem; padding-top:0.8rem;"><span>Total Invested Value</span><span>$${portfolioValue.toLocaleString()}</span></div>`;
+        document.getElementById("portfolioSnapshot").innerHTML = snapshotHtml;
+
+        // Activity Feed with icons
+        let activityHtml = "";
+        if (userData.activity.length === 0) activityHtml = "<div class='activity-item'><i class='fas fa-info-circle'></i> No recent activity. Start trading! ✨</div>";
+        userData.activity.slice(0, 5).forEach(act => {
+            let icon = act.type === 'trade' ? '<i class="fas fa-exchange-alt"></i>' : (act.type === 'lesson' ? '<i class="fas fa-graduation-cap"></i>' : '<i class="fas fa-check-circle"></i>');
+            activityHtml += `<div class="activity-item">${icon} <span style="flex:1; margin-left:12px;">${act.text}</span> <span style="font-size:0.7rem; background:#eef2ff; padding:2px 8px; border-radius:40px;">${act.date}</span></div>`;
+        });
+        document.getElementById("activityFeed").innerHTML = activityHtml;
+
+        // Habit reminder streak with call to action
+        let streakMsg = habitStreak === 0 ? "Start your streak today!" : `🔥 Amazing! ${habitStreak} days streak — keep the fire alive.`;
+        let nextMilestone = habitStreak >= 7 ? "Legendary tier reached" : `${7 - habitStreak} days to gold badge`;
+        document.getElementById("habitStreakReminder").innerHTML = `
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                <div><i class="fas fa-calendar-check fa-2x" style="color: var(--gold-primary); margin-right: 12px;"></i> <strong>${streakMsg}</strong><br><span style="font-size:0.8rem;">🏅 ${nextMilestone}</span></div>
+                <button class="btn-sm" id="gotoHabitsBtn"><i class="fas fa-clipboard-list"></i> Check in & Earn</button>
+            </div>
+        `;
+        document.getElementById("gotoHabitsBtn")?.addEventListener("click", () => window.location.href = "habits.html");
+    }
+
+    function ensureSampleActivity() {
+        let data = loadUserData();
+        if (!data.activity || data.activity.length === 0) {
+            data.activity = defaultUserData.activity;
+            saveUserData(data);
+        }
+        renderDashboard();
+    }
+
+    // Initial load with live price re-calculation and handle local storage consistency
+    ensureSampleActivity();
+    window.addEventListener('storage', () => renderDashboard());
+</script>
+</body>
+</html>

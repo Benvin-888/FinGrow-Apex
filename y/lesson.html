@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>FinGrow | Deep Learning — Master Investing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #FCFAFF 0%, #F1EEFA 100%);
+            color: #1F2937;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        :root {
+            --purple-primary: #7C3AED;
+            --purple-dark: #6D28D9;
+            --purple-soft: #EDE9FE;
+            --purple-glow: rgba(124,58,237,0.2);
+            --gold-primary: #F59E0B;
+            --gold-dark: #D97706;
+            --gold-soft: #FEF3C7;
+            --text-dark: #1F2937;
+            --text-muted: #6B7280;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --shadow-sm: 0 8px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+            --shadow-md: 0 20px 25px -8px rgba(0,0,0,0.08);
+            --radius-card: 1.5rem;
+            --radius-glass: 1.8rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Glass Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(124,58,237,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.9rem 0;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 44px;
+            width: auto;
+            transition: transform 0.2s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-text {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), var(--gold-primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--purple-primary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--purple-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .back-link:hover i { transform: translateX(-4px); }
+        .back-link:hover { color: var(--purple-dark); }
+
+        .progress-container {
+            background: rgba(0,0,0,0.08);
+            border-radius: 40px;
+            height: 8px;
+            width: 100%;
+            margin: 1rem 0 1.5rem;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, var(--purple-primary), var(--gold-primary));
+            width: 0%;
+            height: 100%;
+            border-radius: 40px;
+            transition: width 0.4s ease;
+        }
+
+        .lesson-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-radius: var(--radius-glass);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .lesson-badge {
+            background: linear-gradient(115deg, var(--purple-soft), #FEF3C7);
+            color: var(--purple-primary);
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 0.3rem 1rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-dark), var(--purple-primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 0.75rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin: 2rem 0;
+            border-radius: 1.2rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            background: #000;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .deep-content {
+            background: rgba(255,255,250,0.7);
+            border-radius: 1.2rem;
+            padding: 1.5rem;
+            margin: 1.2rem 0;
+            border-left: 4px solid var(--gold-primary);
+        }
+        .deep-content h3 {
+            margin: 1rem 0 0.5rem;
+            color: var(--purple-dark);
+        }
+        .deep-content p, .deep-content ul, .deep-content table {
+            margin: 0.75rem 0;
+        }
+        .deep-content ul {
+            padding-left: 1.5rem;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .info-table th, .info-table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .info-table th {
+            background: var(--purple-soft);
+            color: var(--purple-primary);
+        }
+
+        .quiz-modern {
+            background: white;
+            border-radius: var(--radius-card);
+            padding: 1.8rem;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(124,58,237,0.2);
+        }
+
+        .quiz-question {
+            margin-bottom: 1.8rem;
+            padding: 1rem;
+            background: #F9FAFB;
+            border-radius: 1.2rem;
+        }
+        .quiz-question p {
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0.8rem;
+            margin: 0.4rem 0;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .quiz-option:hover {
+            background: var(--purple-soft);
+        }
+        .quiz-option input {
+            accent-color: var(--purple-primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .btn-primary, .btn-secondary, .btn-next {
+            border-radius: 60px;
+            padding: 0.7rem 1.8rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: var(--purple-primary);
+            color: white;
+            box-shadow: 0 2px 8px rgba(124,58,237,0.3);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--purple-dark);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: var(--gold-primary);
+            color: #1F2937;
+        }
+        .btn-secondary:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+        }
+        .btn-next {
+            background: #10b981;
+            color: white;
+        }
+        .btn-next:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .feedback {
+            margin-top: 1rem;
+            padding: 0.9rem;
+            border-radius: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .feedback.success {
+            background: #D1FAE5;
+            color: #065F46;
+            border-left: 4px solid #10B981;
+        }
+        .feedback.error {
+            background: #FEE2E2;
+            color: #991B1B;
+            border-left: 4px solid #EF4444;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            margin-top: 2rem;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 0 1rem; }
+            .lesson-glass { padding: 1.2rem; }
+            h1 { font-size: 1.6rem; }
+            .nav-container { flex-direction: column; text-align: center; }
+            .nav-links { justify-content: center; gap: 1rem; }
+            .deep-content { padding: 1rem; }
+            .info-table th, .info-table td { font-size: 0.8rem; padding: 0.5rem; }
+            .quiz-modern { padding: 1rem; }
+            .btn-primary, .btn-secondary, .btn-next { padding: 0.5rem 1.2rem; font-size: 0.85rem; }
+            .logo img { height: 38px; }
+            .logo-text { font-size: 1.4rem; }
+        }
+        @media (max-width: 480px) {
+            .back-link { font-size: 0.85rem; }
+            .logo-text { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <a href="index.html">
+                <img src="Logo.png" alt="FinGrow Logo" onerror="this.src='https://placehold.co/60x60?text=FG'">
+            </a>
+            <span class="logo-text">FinGrow</span>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="lessons.html">Lessons</a>
+            <a href="simulator.html">Simulator</a>
+            <a href="habits.html">Habits</a>
+            <a href="profile.html">Profile</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <a href="lessons.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Library</a>
+    <div class="progress-container">
+        <div class="progress-fill" id="lessonProgressFill" style="width:0%"></div>
+    </div>
+    <div id="lessonContainer"></div>
+</div>
+
+<footer>
+    <p><i class="far fa-copyright"></i> 2026 FinGrow — Deep financial literacy. Learn without limits.</p>
+</footer>
+
+<script>
+    // ---------------------- DEEP & EXPANDED LESSON CONTENT ----------------------
+    const lessonsData = {
+        1: {
+            id: 1,
+            title: "What is a Stock? Ownership & Dividends",
+            badge: "📘 Beginner • 20 min",
+            youtubeId: "p7HKvqRI_Bo",
+            deepContent: `
+                <h3>🏢 What exactly is a stock?</h3>
+                <p>A stock (also known as equity) represents a fractional ownership in a corporation. When you purchase a share, you become a shareholder — you own a tiny slice of that company's assets and earnings. Companies issue stocks to raise capital for expansion, research, or debt repayment.</p>
+                
+                <h3>📈 How investors profit from stocks</h3>
+                <p>There are two primary ways:</p>
+                <ul>
+                    <li><strong>Capital appreciation</strong> — You buy a stock at a lower price and sell it at a higher price. Example: Buy Tesla at $200, sell at $350 → $150 profit per share.</li>
+                    <li><strong>Dividends</strong> — Some companies distribute a portion of their profits to shareholders quarterly. Dividend aristocrats like Coca-Cola, Procter & Gamble have paid dividends for decades.</li>
+                </ul>
+                
+                <h3>📊 Types of stocks</h3>
+                <ul>
+                    <li><strong>Common stock</strong> — Voting rights, potential dividends, price volatility.</li>
+                    <li><strong>Preferred stock</strong> — Fixed dividends, priority over common shareholders, usually no voting rights.</li>
+                </ul>
+                
+                <h3>🏛️ Major stock exchanges</h3>
+                <p>NYSE (New York Stock Exchange), Nasdaq, London Stock Exchange. Stocks are traded through brokers.</p>
+                
+                <table class="info-table">
+                    <tr><th>Concept</th><th>Explanation</th></tr>
+                    <tr><td>Market Cap</td><td>Total value = share price × shares outstanding (Large-cap > $10B)</td></tr>
+                    <tr><td>P/E Ratio</td><td>Price-to-earnings – valuation metric</td></tr>
+                    <tr><td>IPO</td><td>Initial Public Offering – when a company first sells shares to the public</td></tr>
+                </table>
+                <p><strong>Key takeaway:</strong> Stocks have historically returned ~7-10% annually after inflation over long periods, but they are volatile in the short term.</p>
+            `,
+            quiz: [
+                { question: "What does it mean to own a stock?", options: ["You lend money to the company", "You own a piece of the company", "You guarantee company profits", "You can fire the CEO"], correct: 1 },
+                { question: "How can investors make money from stocks? (Select the best answer)", options: ["Only through price increases", "Only through dividends", "Through price increases and/or dividends", "Through interest payments"], correct: 2 },
+                { question: "What is a dividend?", options: ["A fee paid to the broker", "A portion of company profits paid to shareholders", "A stock split", "The company's debt"], correct: 1 }
+            ]
+        },
+        2: {
+            id: 2,
+            title: "Risk vs. Reward",
+            badge: "⚖️ Beginner • 18 min",
+            youtubeId: "5G1g0w6eW5I",
+            deepContent: `
+                <h3>🎢 The risk-return tradeoff</h3>
+                <p>In investing, there is no reward without risk. Higher potential returns always come with higher uncertainty and possible loss. Understanding this balance is crucial to building a portfolio that matches your emotional and financial capacity.</p>
+                
+                <h3>📉 Types of investment risk</h3>
+                <ul>
+                    <li><strong>Market risk</strong> — The entire market declines (e.g., 2008 financial crisis).</li>
+                    <li><strong>Inflation risk</strong> — Your money loses purchasing power over time.</li>
+                    <li><strong>Liquidity risk</strong> — Unable to sell an asset quickly without loss.</li>
+                    <li><strong>Concentration risk</strong> — Too much in one stock or sector.</li>
+                </ul>
+                
+                <h3>🎯 Risk tolerance levels</h3>
+                <p><strong>Aggressive</strong> (young investors, long horizon) → heavy stocks, crypto.<br>
+                <strong>Moderate</strong> → mix of stocks and bonds.<br>
+                <strong>Conservative</strong> → bonds, CDs, dividend aristocrats.</p>
+                
+                <table class="info-table">
+                    <tr><th>Asset Class</th><th>Average Annual Return (historical)</th><th>Risk Level</th></tr>
+                    <tr><td>Savings account</td><td>0.5% - 2%</td><td>Very low</td></tr>
+                    <tr><td>Government bonds</td><td>3% - 5%</td><td>Low</td></tr>
+                    <tr><td>Stock market (S&P 500)</td><td>7% - 10%</td><td>Moderate to high</td></tr>
+                    <tr><td>Crypto / Small caps</td><td>Highly variable (20%+ possible)</td><td>Very high</td></tr>
+                </table>
+                <p><strong>Golden rule:</strong> Never invest money you cannot afford to lose. Use dollar-cost averaging to reduce timing risk.</p>
+            `,
+            quiz: [
+                { question: "Which asset class historically has the highest long-term return?", options: ["Savings account", "Government bonds", "Stocks", "Gold"], correct: 2 },
+                { question: "What is risk tolerance?", options: ["How much money you have", "Your ability and willingness to lose money", "The risk of inflation", "A type of stock"], correct: 1 },
+                { question: "What reduces concentration risk?", options: ["Buying more of one stock", "Diversification", "Timing the market", "Using margin"], correct: 1 }
+            ]
+        },
+        3: {
+            id: 3,
+            title: "Diversification — The Only Free Lunch",
+            badge: "🎯 Intermediate • 22 min",
+            youtubeId: "jg_MflByI3Y",
+            deepContent: `
+                <h3>🥚 Don't put all eggs in one basket</h3>
+                <p>Diversification means spreading your investments across different asset classes, industries, and geographies to reduce unsystematic risk (risk specific to a single company or sector).</p>
+                
+                <h3>🌍 How to build a diversified portfolio</h3>
+                <ul>
+                    <li><strong>Asset allocation:</strong> Stocks, bonds, real estate, commodities, cash.</li>
+                    <li><strong>Industry diversification:</strong> Tech, healthcare, energy, consumer goods, financials.</li>
+                    <li><strong>Geographic diversification:</strong> US, developed international (Europe, Japan), emerging markets (India, Brazil).</li>
+                </ul>
+                
+                <h3>📊 Example of a balanced portfolio (for moderate risk)</h3>
+                <ul>
+                    <li>50% US total stock market (VTI)</li>
+                    <li>20% International stocks (VXUS)</li>
+                    <li>20% Bonds (BND)</li>
+                    <li>5% Real Estate (REITs)</li>
+                    <li>5% Cash or alternatives</li>
+                </ul>
+                
+                <p>During the 2008 crash, a 100% stock portfolio lost ~40%, while a 60/40 stocks/bonds portfolio lost only ~25% and recovered faster.</p>
+                <p><strong>Key insight:</strong> Diversification reduces volatility without necessarily lowering long-term returns. It's the closest thing to a "free lunch" in finance.</p>
+            `,
+            quiz: [
+                { question: "What is the main benefit of diversification?", options: ["Higher guaranteed returns", "Eliminating all risk", "Reducing portfolio volatility and risk", "Beating the market every year"], correct: 2 },
+                { question: "Which portfolio is most diversified?", options: ["100% Tesla stock", "50% Apple, 50% Microsoft", "30% US stocks, 30% bonds, 20% international stocks, 20% real estate", "100% Bitcoin"], correct: 2 },
+                { question: "Diversification helps protect against:", options: ["Market-wide crashes only", "Company-specific and sector risks", "Inflation only", "All risks completely"], correct: 1 }
+            ]
+        },
+        4: {
+            id: 4,
+            title: "Dollar-Cost Averaging (DCA)",
+            badge: "📉 Intermediate • 20 min",
+            youtubeId: "wQ1RAG5-Pcs",
+            deepContent: `
+                <h3>📅 What is DCA?</h3>
+                <p>Dollar-cost averaging is the strategy of investing a fixed amount of money at regular intervals (weekly, monthly) regardless of the asset's price. This removes emotion and the need to "time the market."</p>
+                
+                <h3>📈 Example vs. Lump Sum</h3>
+                <p>Suppose you have $12,000 to invest in a volatile stock.</p>
+                <ul>
+                    <li><strong>Lump sum:</strong> Invest all $12,000 today. If price drops tomorrow, you suffer paper losses.</li>
+                    <li><strong>DCA:</strong> Invest $1,000 each month for 12 months. You buy more shares when prices are low and fewer when prices are high, lowering your average cost.</li>
+                </ul>
+                
+                <h3>💡 Psychological benefits</h3>
+                <p>DCA reduces regret and anxiety. It's perfect for beginners who fear buying at the top. Most 401(k) plans use DCA automatically through payroll deductions.</p>
+                
+                <table class="info-table">
+                    <tr><th>Market Scenario</th><th>DCA Outcome</th><th>Lump Sum Outcome</th></tr>
+                    <tr><td>Bull market (prices rising)</td><td>Good, but lower than lump sum</td><td>Best</td></tr>
+                    <tr><td>Bear market (prices falling)</td><td>Better — buys cheaper over time</td><td>Worst short-term</td></tr>
+                    <tr><td>Volatile sideways</td><td>Excellent — captures dips</td><td>Mixed</td></tr>
+                </table>
+                <p><strong>Verdict:</strong> Lump sum has higher expected return because markets trend up, but DCA reduces risk and emotional stress — ideal for risk-averse investors.</p>
+            `,
+            quiz: [
+                { question: "What is dollar-cost averaging?", options: ["Buying low and selling high", "Investing the same amount regularly", "Putting all money in at once", "Timing the market perfectly"], correct: 1 },
+                { question: "What is a benefit of DCA?", options: ["Guarantees profit", "Removes emotion and timing pressure", "Avoids all losses", "Only works in bull markets"], correct: 1 },
+                { question: "When is DCA most beneficial compared to lump sum?", options: ["In a strong bull market", "In a volatile or falling market", "When you have insider information", "When interest rates are high"], correct: 1 }
+            ]
+        },
+        5: {
+            id: 5,
+            title: "Crypto & Blockchain Basics",
+            badge: "₿ Advanced • 28 min",
+            youtubeId: "bBC-nXj3Ng4",
+            deepContent: `
+                <h3>🔗 What is cryptocurrency?</h3>
+                <p>Cryptocurrency is digital or virtual currency secured by cryptography. Most operate on decentralized networks called blockchains — distributed ledgers enforced by a network of computers (nodes). Bitcoin, created in 2009, was the first.</p>
+                
+                <h3>📦 How blockchain works</h3>
+                <p>Transactions are grouped into "blocks" and cryptographically linked to previous blocks, forming a chain. This makes tampering nearly impossible. No central authority like a bank controls it.</p>
+                
+                <h3>💰 Major cryptocurrencies</h3>
+                <ul>
+                    <li><strong>Bitcoin (BTC)</strong> — digital gold, store of value, capped supply (21 million).</li>
+                    <li><strong>Ethereum (ETH)</strong> — smart contract platform, powers DeFi and NFTs.</li>
+                    <li><strong>Binance Coin, Solana, Cardano</strong> — alternative Layer-1 blockchains.</li>
+                </ul>
+                
+                <h3>⚠️ Risks & volatility</h3>
+                <p>Crypto can drop 50% in weeks. Examples: Bitcoin fell from $69k to $16k in 2022. Regulatory uncertainty, hacks, and lack of intrinsic value (no cash flow) are major concerns.</p>
+                
+                <h3>📊 Suggested allocation for beginners</h3>
+                <p>No more than 1-5% of your total investment portfolio. Only risk capital you can afford to lose entirely. Use reputable exchanges and hardware wallets for storage.</p>
+                <p><strong>Final word:</strong> Crypto is highly speculative but can serve as a hedge against fiat currency debasement. Educate yourself thoroughly before investing.</p>
+            `,
+            quiz: [
+                { question: "What is blockchain?", options: ["A type of stock", "A decentralized digital ledger", "A government bond", "A stock exchange"], correct: 1 },
+                { question: "Which statement about crypto is TRUE?", options: ["Crypto is low-risk", "Crypto is backed by governments", "Crypto is highly volatile", "Crypto always goes up"], correct: 2 },
+                { question: "What is Bitcoin's maximum supply?", options: ["Unlimited", "21 million", "100 million", "1 billion"], correct: 1 }
+            ]
+        }
+    };
+
+    // localStorage helpers
+    function loadUserData() {
+        let data = localStorage.getItem("fingrow_user");
+        if (!data) {
+            const defaultData = {
+                name: "Alex",
+                lessonsCompleted: [],
+                portfolio: { cash: 10000, holdings: [] },
+                habits: { currentStreak: 0, longestStreak: 0, lastCheckin: null },
+                activity: [],
+                totalPortfolioValue: 10000
+            };
+            localStorage.setItem("fingrow_user", JSON.stringify(defaultData));
+            return defaultData;
+        }
+        return JSON.parse(data);
+    }
+
+    function saveUserData(data) {
+        localStorage.setItem("fingrow_user", JSON.stringify(data));
+    }
+
+    function addActivity(userData, actionText) {
+        const today = new Date().toISOString().slice(0,10);
+        userData.activity.unshift({ text: actionText, date: today, type: "lesson" });
+        if (userData.activity.length > 20) userData.activity.pop();
+        saveUserData(userData);
+    }
+
+    function updateProgressBar(userData) {
+        const total = Object.keys(lessonsData).length;
+        const completedCount = userData.lessonsCompleted.length;
+        const percent = (completedCount / total) * 100;
+        const fill = document.getElementById("lessonProgressFill");
+        if (fill) fill.style.width = `${percent}%`;
+    }
+
+    function getNextLessonId(currentId, userData) {
+        const ids = Object.keys(lessonsData).map(Number).sort((a,b) => a-b);
+        const idx = ids.indexOf(currentId);
+        if (idx !== -1 && idx + 1 < ids.length) return ids[idx+1];
+        return null;
+    }
+
+    function renderLesson() {
+        const params = new URLSearchParams(window.location.search);
+        const lessonId = parseInt(params.get('id'));
+        const lesson = lessonsData[lessonId];
+        if (!lesson) {
+            document.getElementById("lessonContainer").innerHTML = `<div class="lesson-glass"><p>❌ Lesson not found. <a href="lessons.html" style="color: var(--purple-primary);">Browse lessons</a></p></div>`;
+            return;
+        }
+
+        const userData = loadUserData();
+        const isCompleted = userData.lessonsCompleted.includes(lessonId);
+        updateProgressBar(userData);
+
+        const container = document.getElementById("lessonContainer");
+        container.innerHTML = `
+            <div class="lesson-glass">
+                <div class="lesson-badge"><i class="fas fa-star-of-life"></i> ${lesson.badge}</div>
+                <h1><i class="fas fa-graduation-cap" style="color: var(--gold-primary);"></i> ${lesson.title}</h1>
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/${lesson.youtubeId}?rel=0" title="${lesson.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="deep-content">
+                    ${lesson.deepContent}
+                </div>
+                <div class="quiz-modern">
+                    <h3 style="display: flex; gap: 0.5rem;"><i class="fas fa-question-circle" style="color: var(--purple-primary);"></i> Knowledge Check</h3>
+                    <div id="quizQuestionsContainer"></div>
+                    <button id="submitQuizBtn" class="btn-primary"><i class="fas fa-check-double"></i> Submit Answers</button>
+                    <div id="quizFeedbackMsg"></div>
+                </div>
+                <div id="completionActionArea" style="margin-top: 1.5rem;"></div>
+                <div id="nextLessonArea" style="margin-top: 1rem;"></div>
+            </div>
+        `;
+
+        // Build quiz
+        const quizContainer = document.getElementById("quizQuestionsContainer");
+        lesson.quiz.forEach((q, idx) => {
+            const qDiv = document.createElement("div");
+            qDiv.className = "quiz-question";
+            qDiv.innerHTML = `<p><i class="fas fa-question"></i> ${idx+1}. ${q.question}</p>`;
+            q.options.forEach((opt, optIdx) => {
+                const optId = `q${idx}_opt${optIdx}`;
+                qDiv.innerHTML += `
+                    <label class="quiz-option" for="${optId}">
+                        <input type="radio" name="q${idx}" id="${optId}" value="${optIdx}">
+                        <span>${opt}</span>
+                    </label>
+                `;
+            });
+            quizContainer.appendChild(qDiv);
+        });
+
+        const submitBtn = document.getElementById("submitQuizBtn");
+        const feedbackDiv = document.getElementById("quizFeedbackMsg");
+        const completionArea = document.getElementById("completionActionArea");
+        const nextArea = document.getElementById("nextLessonArea");
+
+        submitBtn.addEventListener("click", () => {
+            let allCorrect = true;
+            for (let i = 0; i < lesson.quiz.length; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected || parseInt(selected.value) !== lesson.quiz[i].correct) {
+                    allCorrect = false;
+                    break;
+                }
+            }
+            if (allCorrect) {
+                feedbackDiv.innerHTML = `<div class="feedback success"><i class="fas fa-trophy"></i> Excellent! You've understood the deep concepts. 🎉</div>`;
+                if (!isCompleted) {
+                    completionArea.innerHTML = `<button id="markCompleteBtn" class="btn-secondary" style="width:100%;"><i class="fas fa-certificate"></i> Mark as Completed & Earn XP</button>`;
+                    document.getElementById("markCompleteBtn").addEventListener("click", () => {
+                        if (!userData.lessonsCompleted.includes(lessonId)) {
+                            userData.lessonsCompleted.push(lessonId);
+                            saveUserData(userData);
+                            addActivity(userData, `📘 Completed lesson: ${lesson.title}`);
+                            feedbackDiv.innerHTML = `<div class="feedback success"><i class="fas fa-party-horn"></i> Lesson completed! Redirecting...</div>`;
+                            setTimeout(() => { window.location.href = "lessons.html"; }, 1200);
+                        }
+                    });
+                } else {
+                    completionArea.innerHTML = `<div class="feedback success">🏆 Already completed. Great job!</div>`;
+                }
+                const nextId = getNextLessonId(lessonId, userData);
+                if (nextId && !userData.lessonsCompleted.includes(nextId)) {
+                    nextArea.innerHTML = `<button id="nextLessonBtn" class="btn-next"><i class="fas fa-arrow-right"></i> Continue to ${lessonsData[nextId].title}</button>`;
+                    document.getElementById("nextLessonBtn")?.addEventListener("click", () => {
+                        window.location.href = `lesson.html?id=${nextId}`;
+                    });
+                } else if (nextId && userData.lessonsCompleted.includes(nextId)) {
+                    nextArea.innerHTML = `<div class="feedback success">✨ Next lesson already completed, but you can review it anytime.</div>`;
+                } else if (!nextId && userData.lessonsCompleted.length === Object.keys(lessonsData).length) {
+                    nextArea.innerHTML = `<div class="feedback success"><i class="fas fa-crown"></i> 🎉 All lessons mastered! You're a pro.</div>`;
+                }
+            } else {
+                feedbackDiv.innerHTML = `<div class="feedback error"><i class="fas fa-redo-alt"></i> Some answers are incorrect. Re-read the material and try again.</div>`;
+                completionArea.innerHTML = "";
+                nextArea.innerHTML = "";
+            }
+        });
+
+        if (isCompleted) {
+            completionArea.innerHTML = `<div class="feedback success"><i class="fas fa-check-circle"></i> ✅ You have completed this lesson. Keep learning!</div>`;
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.6";
+            const nextId = getNextLessonId(lessonId, userData);
+            if (nextId) {
+                nextArea.innerHTML = `<button id="nextLessonBtnCompleted" class="btn-next"><i class="fas fa-forward"></i> Next Lesson: ${lessonsData[nextId].title}</button>`;
+                document.getElementById("nextLessonBtnCompleted")?.addEventListener("click", () => {
+                    window.location.href = `lesson.html?id=${nextId}`;
+                });
+            }
+        }
+    }
+    renderLesson();
+</script>
+</body>
+</html>

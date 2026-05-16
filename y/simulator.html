@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>FinGrow Horizon | Pro Trading Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at 20% 30%, #f6f9ff 0%, #eef2fa 100%);
+            color: #0f172a;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        :root {
+            --purple-primary: #6C47FF;
+            --purple-dark: #5036c7;
+            --purple-glow: rgba(108, 71, 255, 0.2);
+            --gold-primary: #F5B042;
+            --gold-dark: #dc9a2b;
+            --emerald: #10b981;
+            --crimson: #ef4444;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-600: #475569;
+            --slate-800: #1e293b;
+            --card-radius: 1.8rem;
+            --glass-bg: rgba(255, 255, 255, 0.82);
+            --shadow-xl: 0 25px 40px -12px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 1.8rem;
+        }
+
+        /* glassmorphic navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(108, 71, 255, 0.18);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.8rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 48px;
+            width: auto;
+            border-radius: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-text {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--purple-primary), #8b6cff, var(--gold-primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 550;
+            color: var(--slate-600);
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--purple-primary);
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn-primary, .btn-secondary, .reset-btn, .btn-trade {
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .btn-primary {
+            background: var(--purple-primary);
+            color: white;
+            box-shadow: 0 4px 8px rgba(108, 71, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--purple-dark);
+            transform: translateY(-2px);
+        }
+
+        .reset-btn {
+            background: transparent;
+            border: 1.5px solid var(--slate-200);
+            padding: 0.45rem 1.2rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .reset-btn:hover {
+            background: #fee2e2;
+            border-color: var(--crimson);
+            color: var(--crimson);
+        }
+
+        /* balance panel premium */
+        .balance-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            border-radius: var(--card-radius);
+            padding: 1.6rem 2rem;
+            margin: 1.8rem 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+            border: 1px solid rgba(108, 71, 255, 0.2);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .balance-item {
+            flex: 1;
+            background: white;
+            padding: 1rem 1.4rem;
+            border-radius: 1.5rem;
+            transition: all 0.2s;
+            border: 1px solid var(--slate-200);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .balance-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: var(--slate-600);
+        }
+
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .gain-positive { color: #10b981; }
+        .gain-negative { color: #ef4444; }
+
+        /* asset table */
+        .asset-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+            margin: 1.5rem 0;
+        }
+
+        .asset-table th, .asset-table td {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--slate-200);
+        }
+
+        .asset-table th {
+            background: var(--slate-100);
+            font-weight: 700;
+        }
+
+        .trade-form {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .trade-form input {
+            width: 90px;
+            padding: 0.5rem 0.8rem;
+            border: 1.5px solid var(--slate-200);
+            border-radius: 40px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .trade-form input:focus {
+            outline: none;
+            border-color: var(--purple-primary);
+            box-shadow: 0 0 0 3px var(--purple-glow);
+        }
+
+        .btn-trade {
+            background: var(--purple-primary);
+            color: white;
+            padding: 0.45rem 1rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-trade-sell {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* cards grid */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 1.6rem;
+            margin: 1.5rem 0;
+        }
+
+        .portfolio-summary, .activity-feed, .chart-card {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 1.6rem;
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .activity-list {
+            max-height: 260px;
+            overflow-y: auto;
+            padding-right: 0.3rem;
+        }
+
+        .activity-item {
+            border-left: 3px solid var(--purple-primary);
+            padding: 0.7rem 1rem;
+            margin-bottom: 0.7rem;
+            background: var(--slate-100);
+            border-radius: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .update-timer {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(108, 71, 255, 0.1);
+            padding: 0.35rem 1.2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(0.8);}
+            100% { opacity: 1; transform: scale(1.2);}
+        }
+
+        .trend-badge {
+            font-size: 0.7rem;
+            background: #eef2ff;
+            border-radius: 30px;
+            padding: 0.2rem 0.6rem;
+            margin-left: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--slate-600);
+            border-top: 1px solid var(--slate-200);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2col { grid-template-columns: 1fr; gap: 1.2rem; }
+            .container { padding: 0 1rem; }
+            .balance-amount { font-size: 1.5rem; }
+            .asset-table, .asset-table tbody, .asset-table tr, .asset-table td { display: block; width: 100%; }
+            .asset-table th { display: none; }
+            .asset-table td { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eef2f6; }
+            .trade-form { justify-content: flex-end; }
+        }
+
+        button:active { transform: scale(0.97);}
+        canvas { max-height: 180px; width: 100%; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-container">
+        <div class="logo">
+            <a href="index.html">
+                <img src="Logo.png" alt="FinGrow Horizon" onerror="this.src='https://placehold.co/50x50?text=FG'">
+            </a>
+            <span class="logo-text">FinGrow Horizon</span>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="lessons.html">Lessons</a>
+            <a href="simulator.html" class="active">Simulator</a>
+            <a href="habits.html">Habits</a>
+            <a href="profile.html">Profile</a>
+            <button class="reset-btn" id="resetSimulatorBtn"><i class="fas fa-undo-alt"></i> Reset</button>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 0.5rem;">
+        <div>
+            <h1 style="font-size: 2rem; font-weight: 800;">📈 Live Paper Trading</h1>
+            <p style="color: #475569;">5‑min market cycles · Trend-driven prices · Zero risk</p>
+        </div>
+        <div class="update-timer" id="timerBadge">
+            <span class="live-dot"></span>
+            <span>Next price update in <span id="countdownSeconds">--</span>s</span>
+            <i class="fas fa-chart-line" style="color: var(--gold-primary);"></i>
+        </div>
+    </div>
+
+    <div class="balance-panel" id="balancePanel"></div>
+
+    <div style="overflow-x: auto;">
+        <table class="asset-table" id="assetsTable">
+            <thead><tr><th>Asset</th><th>Price (USD)</th><th>24h Change</th><th>Your Shares</th><th>Avg Cost</th><th>Buy / Sell</th></tr></thead>
+            <tbody id="assetsTableBody"></tbody>
+        </table>
+    </div>
+
+    <div class="grid-2col">
+        <div class="portfolio-summary" id="portfolioSummary"></div>
+        <div class="activity-feed">
+            <h3><i class="fas fa-history"></i> Real-time Activity</h3>
+            <div id="activityList" class="activity-list"></div>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            <h3><i class="fas fa-chart-line"></i> Net Worth Trend (last 40 updates)</h3>
+            <span class="trend-badge"><i class="fas fa-chart-simple"></i> 5-min intervals</span>
+        </div>
+        <canvas id="wealthChart" width="800" height="200" style="max-height: 200px; width:100%; margin-top: 1rem;"></canvas>
+    </div>
+
+    <div style="text-align: center; font-size: 0.78rem; margin: 1.2rem 0; color: #5b6e8c;">
+        <i class="fas fa-chart-line"></i> Prices evolve with stochastic trend + momentum every 5 minutes. Practice strategic trading.
+    </div>
+</main>
+<footer>
+    <p>© 2026 FinGrow Horizon — Apex Tech Solutions | Simulated environment with 5-min realistic cycles</p>
+</footer>
+
+<script>
+    // ---------- ASSET DATABASE with trend momentum ----------
+    let assets = [
+        { symbol: "AAPL", name: "Apple Inc.", price: 185.75, change: 1.2, trendDrift: 0.003, momentum: 0 },
+        { symbol: "TSLA", name: "Tesla Inc.", price: 245.50, change: -0.8, trendDrift: -0.002, momentum: 0 },
+        { symbol: "BTC", name: "Bitcoin", price: 62000, change: 3.4, trendDrift: 0.007, momentum: 0 },
+        { symbol: "ETH", name: "Ethereum", price: 3400, change: 2.1, trendDrift: 0.005, momentum: 0 },
+        { symbol: "SPY", name: "S&P 500 ETF", price: 475.30, change: 0.5, trendDrift: 0.001, momentum: 0 },
+        { symbol: "GOLD", name: "Gold Futures", price: 2350, change: 0.2, trendDrift: 0.0005, momentum: 0 },
+        { symbol: "MSFT", name: "Microsoft", price: 420.10, change: 1.0, trendDrift: 0.004, momentum: 0 },
+        { symbol: "NVDA", name: "NVIDIA", price: 890.00, change: 2.3, trendDrift: 0.009, momentum: 0 }
+    ];
+
+    // user data management
+    function loadUserData() {
+        let data = localStorage.getItem("fingrow_trend_pro");
+        if (!data) {
+            const defaultData = {
+                portfolio: { cash: 10000, holdings: [] },
+                activity: [],
+                wealthHistory: [10000],
+                lastUpdate: new Date().toISOString()
+            };
+            saveUserData(defaultData);
+            return defaultData;
+        }
+        return JSON.parse(data);
+    }
+
+    function saveUserData(data) {
+        localStorage.setItem("fingrow_trend_pro", JSON.stringify(data));
+    }
+
+    function computeTotalValue(userData) {
+        let holdingsVal = 0;
+        for (let hold of userData.portfolio.holdings) {
+            const asset = assets.find(a => a.symbol === hold.symbol);
+            const currentPrice = asset ? asset.price : hold.avgPrice;
+            holdingsVal += hold.shares * currentPrice;
+        }
+        return userData.portfolio.cash + holdingsVal;
+    }
+
+    function addActivity(userData, text) {
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute:'2-digit', second:'2-digit' });
+        userData.activity.unshift({ text: `${timestamp} — ${text}`, date: Date.now() });
+        if (userData.activity.length > 18) userData.activity.pop();
+        saveUserData(userData);
+    }
+
+    function recordWealthPoint(userData) {
+        const total = computeTotalValue(userData);
+        if (!userData.wealthHistory) userData.wealthHistory = [total];
+        userData.wealthHistory.push(total);
+        if (userData.wealthHistory.length > 45) userData.wealthHistory.shift();
+        saveUserData(userData);
+        return total;
+    }
+
+    // trade logic
+    function buyAsset(userData, symbol, sharesQty) {
+        const asset = assets.find(a => a.symbol === symbol);
+        if (!asset) return false;
+        const cost = asset.price * sharesQty;
+        if (userData.portfolio.cash < cost) { alert("💸 Insufficient virtual cash."); return false; }
+        let holding = userData.portfolio.holdings.find(h => h.symbol === symbol);
+        if (holding) {
+            const newTotal = holding.shares + sharesQty;
+            const newAvg = ((holding.shares * holding.avgPrice) + cost) / newTotal;
+            holding.shares = newTotal;
+            holding.avgPrice = newAvg;
+        } else {
+            userData.portfolio.holdings.push({ symbol: symbol, shares: sharesQty, avgPrice: asset.price });
+        }
+        userData.portfolio.cash -= cost;
+        addActivity(userData, `🟢 BOUGHT ${sharesQty} ${symbol} @ $${asset.price.toFixed(2)}`);
+        saveUserData(userData);
+        return true;
+    }
+
+    function sellAsset(userData, symbol, sharesQty) {
+        const holding = userData.portfolio.holdings.find(h => h.symbol === symbol);
+        if (!holding || holding.shares < sharesQty) { alert("❌ Insufficient shares."); return false; }
+        const asset = assets.find(a => a.symbol === symbol);
+        const revenue = asset.price * sharesQty;
+        holding.shares -= sharesQty;
+        if (holding.shares === 0) userData.portfolio.holdings = userData.portfolio.holdings.filter(h => h.symbol !== symbol);
+        userData.portfolio.cash += revenue;
+        addActivity(userData, `🔴 SOLD ${sharesQty} ${symbol} @ $${asset.price.toFixed(2)}`);
+        saveUserData(userData);
+        return true;
+    }
+
+    function resetSimulator() {
+        if (confirm("Reset portfolio to $10,000? All holdings & history will be erased.")) {
+            const freshData = { portfolio: { cash: 10000, holdings: [] }, activity: [], wealthHistory: [10000] };
+            saveUserData(freshData);
+            renderSimulator();
+            drawWealthChart(freshData);
+        }
+    }
+
+    // ---------- TRENDY PRICE UPDATE (5 minutes, with momentum/mean reversion) ----------
+    let updateTimer = null;
+    let countdownInterval = null;
+    const UPDATE_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+
+    function updatePricesWithTrend() {
+        for (let i = 0; i < assets.length; i++) {
+            const asset = assets[i];
+            let oldPrice = asset.price;
+            // realistic random walk with drift + momentum effect
+            let volatility = asset.symbol === "BTC" || asset.symbol === "ETH" ? 0.022 : 0.014;
+            let randomComponent = (Math.random() - 0.5) * volatility;
+            let momentumEffect = asset.momentum * 0.4;
+            let drift = asset.trendDrift * 0.6;
+            let totalChangePct = drift + randomComponent + momentumEffect;
+            totalChangePct = Math.min(Math.max(totalChangePct, -0.045), 0.045);
+            let newPrice = oldPrice * (1 + totalChangePct);
+            newPrice = parseFloat(newPrice.toFixed(2));
+            if (newPrice <= 0.01) newPrice = oldPrice * 0.99;
+            let realizedMove = (newPrice - oldPrice) / oldPrice;
+            asset.momentum = realizedMove * 0.65;
+            asset.price = newPrice;
+            asset.change = parseFloat((realizedMove * 100).toFixed(2));
+            if (Math.random() < 0.25) {
+                asset.trendDrift = parseFloat((asset.trendDrift + (Math.random() - 0.5) * 0.003).toFixed(5));
+                asset.trendDrift = Math.min(Math.max(asset.trendDrift, -0.012), 0.012);
+            }
+        }
+        const userData = loadUserData();
+        recordWealthPoint(userData);
+        renderSimulator();
+        drawWealthChart(userData);
+        highlightTableFlash();
+    }
+
+    function highlightTableFlash() {
+        const rows = document.querySelectorAll('.asset-table tbody tr');
+        rows.forEach(row => {
+            const priceCell = row.cells[1];
+            if (priceCell) {
+                priceCell.style.transition = 'background 0.15s';
+                priceCell.style.backgroundColor = 'rgba(108, 71, 255, 0.15)';
+                setTimeout(() => { priceCell.style.backgroundColor = ''; }, 300);
+            }
+        });
+    }
+
+    function startUpdateCountdown() {
+        if (countdownInterval) clearInterval(countdownInterval);
+        const updateInterval = UPDATE_INTERVAL_MS;
+        let nextUpdateTime = Date.now() + updateInterval;
+        function updateDisplay() {
+            const now = Date.now();
+            let diff = Math.max(0, nextUpdateTime - now);
+            let seconds = Math.floor(diff / 1000);
+            const countdownSpan = document.getElementById("countdownSeconds");
+            if (countdownSpan) countdownSpan.innerText = seconds;
+            if (diff <= 500) {
+                if (updateTimer) clearTimeout(updateTimer);
+                updateTimer = setTimeout(() => {
+                    updatePricesWithTrend();
+                    nextUpdateTime = Date.now() + updateInterval;
+                    updateDisplay();
+                }, 100);
+            }
+        }
+        updateDisplay();
+        countdownInterval = setInterval(updateDisplay, 1000);
+        if (updateTimer) clearTimeout(updateTimer);
+        function scheduleUpdate() {
+            updateTimer = setTimeout(() => {
+                updatePricesWithTrend();
+                nextUpdateTime = Date.now() + updateInterval;
+                scheduleUpdate();
+            }, updateInterval);
+        }
+        scheduleUpdate();
+    }
+
+    // ---------- RENDERING ENGINE ----------
+    let chartInstance = null;
+
+    function drawWealthChart(userData) {
+        const canvas = document.getElementById('wealthChart');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const history = userData.wealthHistory || [10000];
+        const labels = history.map((_, idx) => idx);
+        if (chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Portfolio Net Worth ($)',
+                    data: history,
+                    borderColor: '#6C47FF',
+                    backgroundColor: 'rgba(108, 71, 255, 0.05)',
+                    borderWidth: 3,
+                    pointRadius: 2,
+                    pointBackgroundColor: '#F5B042',
+                    pointBorderColor: '#fff',
+                    tension: 0.2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: { legend: { position: 'top' }, tooltip: { callbacks: { label: (ctx) => `$${ctx.raw.toFixed(2)}` } } },
+                scales: { y: { ticks: { callback: (val) => '$' + val.toLocaleString() }, grid: { color: '#e9eef3' } } }
+            }
+        });
+    }
+
+    function renderSimulator() {
+        let userData = loadUserData();
+        const totalVal = computeTotalValue(userData);
+        const cash = userData.portfolio.cash;
+        const startCash = 10000;
+        const totalReturn = totalVal - startCash;
+        const gainClass = totalReturn >= 0 ? "gain-positive" : "gain-negative";
+        const gainSymbol = totalReturn >= 0 ? "+" : "";
+
+        document.getElementById("balancePanel").innerHTML = `
+            <div class="balance-item"><div class="balance-label"><i class="fas fa-coins"></i> Buying Power</div><div class="balance-amount">$${cash.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</div></div>
+            <div class="balance-item"><div class="balance-label"><i class="fas fa-chart-pie"></i> Portfolio Value</div><div class="balance-amount">$${totalVal.toLocaleString(undefined, {minimumFractionDigits:2})}</div></div>
+            <div class="balance-item"><div class="balance-label"><i class="fas fa-trend-up"></i> Total P&L</div><div class="balance-amount ${gainClass}">${gainSymbol}$${Math.abs(totalReturn).toLocaleString(undefined, {minimumFractionDigits:2})}</div></div>
+        `;
+
+        const tbody = document.getElementById("assetsTableBody");
+        tbody.innerHTML = "";
+        for (let asset of assets) {
+            const holding = userData.portfolio.holdings.find(h => h.symbol === asset.symbol);
+            const shares = holding ? holding.shares : 0;
+            const avgCost = holding ? holding.avgPrice : 0;
+            const changeColor = asset.change >= 0 ? "#10b981" : "#ef4444";
+            const changeArrow = asset.change >= 0 ? "▲" : "▼";
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td><strong>${asset.symbol}</strong><br><span style="font-size:0.7rem; color:#64748b;">${asset.name}</span></td>
+                <td class="price-flash" style="font-weight:700;">$${asset.price.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+                <td style="color:${changeColor}; font-weight:600;">${changeArrow} ${Math.abs(asset.change)}%</td>
+                <td>${shares > 0 ? shares.toFixed(4) : '—'}</td>
+                <td>${avgCost ? `$${avgCost.toFixed(2)}` : '—'}</td>
+                <td class="trade-form">
+                    <input type="number" id="qty_${asset.symbol}" placeholder="Qty" min="0.001" step="0.01" value="1" style="width:75px;">
+                    <button class="btn-trade buy-btn" data-symbol="${asset.symbol}" data-action="buy"><i class="fas fa-cart-plus"></i> Buy</button>
+                    <button class="btn-trade btn-trade-sell sell-btn" data-symbol="${asset.symbol}" data-action="sell"><i class="fas fa-arrow-down"></i> Sell</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        document.querySelectorAll(".buy-btn, .sell-btn").forEach(btn => {
+            btn.removeEventListener("click", tradeHandler);
+            btn.addEventListener("click", tradeHandler);
+        });
+
+        let summaryHtml = `<h3><i class="fas fa-briefcase"></i> Your Holdings & Performance</h3>`;
+        if (userData.portfolio.holdings.length === 0) {
+            summaryHtml += `<p style="padding:1rem 0;">✨ No open positions. Start buying assets to build your virtual portfolio.</p>`;
+        } else {
+            summaryHtml += `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:1rem;">`;
+            for (let hold of userData.portfolio.holdings) {
+                const asset = assets.find(a => a.symbol === hold.symbol);
+                if (!asset) continue;
+                const valueNow = hold.shares * asset.price;
+                const costBasis = hold.shares * hold.avgPrice;
+                const pl = valueNow - costBasis;
+                const plPercent = (pl / costBasis) * 100;
+                summaryHtml += `
+                    <div style="background:#fafcff; border-radius:1.4rem; padding:1rem; border:1px solid #eef2ff;">
+                        <strong style="font-size:1.1rem;">${hold.symbol}</strong>
+                        <div>Shares: ${hold.shares.toFixed(4)}</div>
+                        <div>Avg: $${hold.avgPrice.toFixed(2)}</div>
+                        <div>Value: $${valueNow.toFixed(2)}</div>
+                        <div style="font-weight:600; color:${pl >=0 ? '#10b981' : '#ef4444'};">${pl >=0 ? '+' : ''}$${pl.toFixed(2)} (${plPercent.toFixed(2)}%)</div>
+                    </div>
+                `;
+            }
+            summaryHtml += `</div>`;
+        }
+        document.getElementById("portfolioSummary").innerHTML = summaryHtml;
+
+        const activityDiv = document.getElementById("activityList");
+        if (userData.activity.length === 0) activityDiv.innerHTML = `<div class="activity-item">🌟 Start trading — every transaction appears here.</div>`;
+        else activityDiv.innerHTML = userData.activity.map(act => `<div class="activity-item"><i class="fas fa-exchange-alt" style="margin-right:10px; color:#6C47FF;"></i>${act.text}</div>`).join('');
+    }
+
+    function tradeHandler(e) {
+        const btn = e.currentTarget;
+        const symbol = btn.getAttribute("data-symbol");
+        const action = btn.getAttribute("data-action");
+        const qtyInput = document.getElementById(`qty_${symbol}`);
+        let shares = parseFloat(qtyInput.value);
+        if (isNaN(shares) || shares <= 0) { alert("Please enter a valid quantity."); return; }
+        let userDataCurrent = loadUserData();
+        let success = false;
+        if (action === "buy") success = buyAsset(userDataCurrent, symbol, shares);
+        else if (action === "sell") success = sellAsset(userDataCurrent, symbol, shares);
+        if (success) {
+            const freshData = loadUserData();
+            recordWealthPoint(freshData);
+            renderSimulator();
+            drawWealthChart(freshData);
+        }
+    }
+
+    function init() {
+        let user = loadUserData();
+        if (!user.wealthHistory || user.wealthHistory.length < 2) {
+            user.wealthHistory = [computeTotalValue(user)];
+            saveUserData(user);
+        }
+        renderSimulator();
+        drawWealthChart(user);
+        startUpdateCountdown();
+        setTimeout(() => drawWealthChart(loadUserData()), 100);
+    }
+
+    document.getElementById("resetSimulatorBtn").addEventListener("click", resetSimulator);
+    window.addEventListener('resize', () => { const ud = loadUserData(); drawWealthChart(ud); });
+    init();
+</script>
+</body>
+</html>
